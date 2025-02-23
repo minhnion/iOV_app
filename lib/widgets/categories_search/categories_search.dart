@@ -1,122 +1,105 @@
 import 'package:flutter/material.dart';
 
 class CategoriesSearch extends StatefulWidget {
-  const CategoriesSearch({super.key});
+  const CategoriesSearch({
+    super.key,
+    required this.categoriesList,
+    required this.selectedCategories,
+    required this.onSelectionChanged,
+  });
+
+  final List<String> categoriesList;
+  final List<String> selectedCategories;
+  final Function(List<String>) onSelectionChanged;
 
   @override
   State<CategoriesSearch> createState() => _CategoriesSearchState();
 }
 
 class _CategoriesSearchState extends State<CategoriesSearch> {
-  bool _moiTaoChecked = false;
-  bool _daLapXongChecked = false;
-  bool _canCapNhatChecked = false;
-  bool _daCapNhatChecked = false;
+  late List<String> _tempSelectedCategories;
+
+  @override
+  void initState() {
+    super.initState();
+    _tempSelectedCategories = List.from(widget.selectedCategories);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AlertDialog(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10.0),
-      ),
-      content: SingleChildScrollView( // Để tránh tràn màn hình
+    return Dialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24.0)),
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(14, 24, 14, 24),
         child: Column(
-          mainAxisSize: MainAxisSize.min, // Quan trọng để chiều cao dialog vừa nội dung
+          mainAxisSize: MainAxisSize.min,
           children: [
-            // Ô Tìm kiếm (ví dụ đơn giản)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey.shade400),
-                borderRadius: BorderRadius.circular(5.0),
-              ),
-              child: Row(
-                children: [
-                  Icon(Icons.search, color: Colors.grey.shade600),
-                  const SizedBox(width: 8.0),
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Tìm kiếm',
-                        border: InputBorder.none, // Loại bỏ border của TextField
-                      ),
-                    ),
-                  ),
-                ],
+            TextFormField(
+              decoration: InputDecoration(
+                  hintText: 'Tìm kiếm',
+                  border: const OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.search, color: Colors.grey[600],)
               ),
             ),
             const SizedBox(height: 16.0),
 
-            // Checkboxes
-            CheckboxListTile(
-              title: const Text('Mới tạo'),
-              value: _moiTaoChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _moiTaoChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading, // Checkbox bên trái
-            ),
-            CheckboxListTile(
-              title: const Text('Đã lắp xong'),
-              value: _daLapXongChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _daLapXongChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-            ),
-            CheckboxListTile(
-              title: const Text('Cần cập nhật'),
-              value: _canCapNhatChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _canCapNhatChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-            ),
-            CheckboxListTile(
-              title: const Text('Đã cập nhật'),
-              value: _daCapNhatChecked,
-              onChanged: (bool? value) {
-                setState(() {
-                  _daCapNhatChecked = value!;
-                });
-              },
-              controlAffinity: ListTileControlAffinity.leading,
-            ),
-
-            const Divider(),
-
-            // Các button ở dưới
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      // Xử lý chọn tất cả
+            SizedBox(
+              height: 500,
+              child: ListView.builder(
+                itemCount: widget.categoriesList.length,
+                itemBuilder: (context, index) {
+                  final category = widget.categoriesList[index];
+                  return CheckboxListTile(
+                    controlAffinity: ListTileControlAffinity.leading,
+                    title: Text(category),
+                    value: _tempSelectedCategories.contains(category),
+                    onChanged: (bool? value) {
                       setState(() {
-                        _moiTaoChecked = true;
-                        _daLapXongChecked = true;
-                        _canCapNhatChecked = true;
-                        _daCapNhatChecked = true;
+                        if (value == true) {
+                          _tempSelectedCategories.add(category);
+                        } else {
+                          _tempSelectedCategories.remove(category);
+                        }
                       });
                     },
-                    child: const Text('Chọn tất cả', style: TextStyle(color: Colors.black)),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop(); // Đóng dialog
-                    },
-                    child: const Text('Hoàn thành', style: TextStyle(color: Colors.green)),
-                  ),
-                ],
+                  );
+                },
               ),
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      _tempSelectedCategories = List.from(widget.categoriesList);
+                    });
+                  },
+                  child: const Text(
+                      'Chọn tất cả',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20
+                      )
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
+                    widget.onSelectionChanged(_tempSelectedCategories);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                      'Hoàn thành',
+                      style: TextStyle(
+                          color: Colors.green,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20
+                      )
+                  ),
+                ),
+              ],
             ),
           ],
         ),
