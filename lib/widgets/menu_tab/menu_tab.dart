@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iov_app/screens/installation_screen/installation_screen.dart';
+import 'package:iov_app/screens/kpi_screen/kpi_screen.dart';
+import 'package:iov_app/screens/profile_screen/profile_screen.dart';
+import 'package:iov_app/widgets/confirm_inform/confirm_inform.dart';
 
 class MenuTab extends StatefulWidget {
   const MenuTab({super.key, required this.selectedMenu});
@@ -24,9 +28,8 @@ class _MenuTabState extends State<MenuTab> {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
+      child: Column(
+        children: [
           DrawerHeader(
             decoration: const BoxDecoration(
               color: Colors.white,
@@ -66,7 +69,7 @@ class _MenuTabState extends State<MenuTab> {
               setState(() {
                 _selectedMenu = 'Installations';
               });
-              Navigator.pop(context); // Đóng drawer
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const InstallationsScreen()));
             },
             child: Container(
               color: _selectedMenu == 'Installations'
@@ -92,7 +95,7 @@ class _MenuTabState extends State<MenuTab> {
               setState(() {
                 _selectedMenu = 'Kpi';
               });
-              Navigator.pop(context); // Đóng drawer
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const KpiScreen()));
             },
             child: Container(
               color:
@@ -111,67 +114,59 @@ class _MenuTabState extends State<MenuTab> {
               ),
             ),
           ),
-          // Thêm các mục menu khác ở đây
-          const SizedBox(
-            height: 500,
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  color: _selectedMenu == 'Profile'
-                      ? Colors.green.withOpacity(0.3)
-                      : null,
-                  child: ListTile(
-                    leading: const CircleAvatar(
-                        backgroundColor: Color.fromRGBO(23, 150, 68, 100),
-                        child: Icon(Icons.person, color: Colors.white)),
-                    title: Text(
-                      'quynhlx@gmail.com',
-                      style: TextStyle(
-                        fontWeight: _selectedMenu == 'Profile'
-                            ? FontWeight.bold
-                            : FontWeight.normal,
-                        fontSize: 16,
-                      ),
-                    ),
-                    trailing: const Icon(Icons.arrow_drop_down),
-                    onTap: () {
-                      setState(() {
-                        _selectedMenu = "Profile";
-                      });
-                    },
-                  ),
+          const Spacer(),
+          Container(
+            color: _selectedMenu == 'Profile'
+                ? Colors.green.withOpacity(0.3)
+                : null,
+            child: ListTile(
+              leading: const CircleAvatar(
+                  backgroundColor: Color.fromRGBO(23, 150, 68, 100),
+                  child: Icon(Icons.person, color: Colors.white)),
+              title: Text(
+                'quynhlx@gmail.com',
+                style: TextStyle(
+                  fontWeight: _selectedMenu == 'Profile'
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                  fontSize: 16,
                 ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      _selectedMenu = "SignOut";
-                    });
-                  },
-                  child: Container(
-                    color: _selectedMenu == 'SignOut'
-                        ? Colors.green.withOpacity(0.3)
-                        : null,
-                    child: ListTile(
-                      leading: const Icon(Icons.logout, color: Colors.black),
-                      title: Text(
-                        'Đăng xuất',
-                        style: TextStyle(
-                          fontWeight: _selectedMenu == 'SignOut'
-                              ? FontWeight.bold
-                              : FontWeight.normal,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
+              ),
+              trailing: const Icon(Icons.arrow_drop_down),
+              onTap: () {
+                setState(() {
+                  _selectedMenu = "Profile";
+                });
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const ProfileScreen()));
+              },
             ),
-          )
+          ),
+
+          InkWell(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return const ConfirmInform(
+                      title: 'Xác nhận đăng xuất',
+                      content: 'Bạn có muốn đăng xuất không?',
+                    );
+                  }
+              );
+            },
+            child: ListTile(
+              leading: const Icon(Icons.logout, color: Colors.black),
+              title: Text(
+                'Đăng xuất',
+                style: TextStyle(
+                  fontWeight: _selectedMenu == 'SignOut'
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                  fontSize: 16,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
