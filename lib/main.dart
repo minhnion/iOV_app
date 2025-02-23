@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:iov_app/screens/installation_screen/installation_screen.dart';
+import 'package:iov_app/screens/kpi_screen/kpi_screen.dart';
 import 'package:iov_app/screens/login_screen/login_screen.dart';
 
 void main() {
@@ -10,7 +11,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
@@ -23,9 +23,10 @@ class MyApp extends StatelessWidget {
       ],
       supportedLocales: [
         Locale('vi', 'VN'), // Tiếng Việt
+        Locale('en', 'US'), // English
       ],
-      locale: Locale('vi', 'VN'), // Mặc định là tiếng Việt
-      home: InstallationsScreen(),
+      locale: Locale('vi', 'VN'),
+      home: KpiScreen(),
     );
   }
 }
