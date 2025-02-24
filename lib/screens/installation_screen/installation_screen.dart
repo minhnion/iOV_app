@@ -1,5 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:iov_app/widgets/installation_search_form/installation_search_form.dart';
 import 'package:iov_app/widgets/menu_tab/menu_tab.dart';
 import 'package:iov_app/widgets/vehicle_card/vehicle_card.dart';
@@ -97,9 +97,9 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            const Text(
-              'Installations',
-              style: TextStyle(
+            Text(
+              'installations'.tr(),
+              style: const TextStyle(
                 color: Colors.black,
                 fontWeight: FontWeight.bold
               ),

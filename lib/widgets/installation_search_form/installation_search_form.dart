@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/widgets/categories_search/categories_search.dart';
 
@@ -26,7 +27,7 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
       BuildContext context, TextEditingController controller) async {
     DateTime? picked = await showDatePicker(
         context: context,
-        locale: const Locale("vi", "VN"),
+        locale: context.locale,
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
