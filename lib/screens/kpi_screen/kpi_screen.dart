@@ -50,7 +50,11 @@ class _KpiScreenState extends State<KpiScreen> {
           ),
         ],
       ),
-      drawer: const MenuTab(selectedMenu: "Kpi"),
+      drawer: MenuTab(selectedMenu: "Kpi", onLanguageChanged: () {
+        setState(() {
+
+        });
+      },),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(

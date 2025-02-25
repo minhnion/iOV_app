@@ -1,13 +1,16 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/screens/installation_screen/installation_screen.dart';
 import 'package:iov_app/screens/kpi_screen/kpi_screen.dart';
 import 'package:iov_app/screens/profile_screen/profile_screen.dart';
+import 'package:iov_app/utils/change_language.dart';
 import 'package:iov_app/widgets/confirm_inform/confirm_inform.dart';
 
 class MenuTab extends StatefulWidget {
-  const MenuTab({super.key, required this.selectedMenu});
+  const MenuTab({super.key, required this.selectedMenu, required this.onLanguageChanged});
 
   final String selectedMenu;
+  final VoidCallback onLanguageChanged;
 
   @override
   State<MenuTab> createState() => _MenuTabState();
@@ -15,6 +18,13 @@ class MenuTab extends StatefulWidget {
 
 class _MenuTabState extends State<MenuTab> {
   late String _selectedMenu;
+  void _changeLanguage(String? selectedLanguage) {
+    changeLanguage(context, selectedLanguage, () {
+      setState(() {
+      });
+      widget.onLanguageChanged();
+    });
+  }
 
   @override
   void initState() {
@@ -27,6 +37,7 @@ class _MenuTabState extends State<MenuTab> {
 
   @override
   Widget build(BuildContext context) {
+    final String currentLanguageDisplay = getCurrentLanguageDisplay(context);
     return Drawer(
       child: Column(
         children: [
@@ -141,7 +152,46 @@ class _MenuTabState extends State<MenuTab> {
               },
             ),
           ),
-
+          Container(
+            color: _selectedMenu == 'Language'
+                ? Colors.green.withOpacity(0.3)
+                : null,
+            child: ListTile(
+              leading: const Icon(Icons.language, color: Colors.blue),
+              title: Text(
+                'Ngôn ngữ',
+                style: TextStyle(
+                  fontWeight: _selectedMenu == 'Language'
+                      ? FontWeight.bold
+                      : FontWeight.normal,
+                  fontSize: 16,
+                ),
+              ),
+              trailing: DropdownButton<String>(
+                value: currentLanguageDisplay,
+                underline: Container(), // Bỏ đường gạch chân
+                icon: const Icon(Icons.arrow_drop_down),
+                onChanged: _changeLanguage,
+                items: getLanguageItems(context)
+                    .map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(
+                      value,
+                      style: const TextStyle(
+                        fontSize: 14,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              onTap: () {
+                setState(() {
+                  _selectedMenu = "Language";
+                });
+              },
+            ),
+          ),
           InkWell(
             onTap: () {
               showDialog(

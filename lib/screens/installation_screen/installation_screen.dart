@@ -124,7 +124,11 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
           ),
         ],
       ),
-      drawer: const MenuTab(selectedMenu: "Installations"),
+      drawer: MenuTab(selectedMenu: "Installations", onLanguageChanged: () {
+        setState(() {
+
+        });
+      },),
       body: ListView(
         children: [
           Row(

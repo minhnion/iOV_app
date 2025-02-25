@@ -30,7 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-      drawer: const MenuTab(selectedMenu: "Profile"),
+      drawer: MenuTab(selectedMenu: "Profile", onLanguageChanged: () {
+        setState(() {
+
+        });
+      },),
       body: Container(
         color: Colors.white,
         child: Padding(
