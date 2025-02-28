@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:iov_app/screens/detailed_installation/detailed_installation.dart';
 import 'package:iov_app/screens/installation_screen/installation_screen.dart';
 
 

@@ -1,6 +1,7 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/widgets/categories_search/categories_search.dart';
+
+import '../../utils/date_picker.dart';
 
 class InstallationSearchForm extends StatefulWidget {
   const InstallationSearchForm({super.key});
@@ -14,29 +15,13 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
   final TextEditingController _fromDateController = TextEditingController();
   final TextEditingController _toDateController = TextEditingController();
 
-  // final TextEditingController _jobStatus = TextEditingController();
-  List<String> _jobCategories = [
+  final List<String> _jobCategories = [
     "Mới tạo",
     "Đã lắp xong",
     "Cần cập nhật",
     "Đã cập nhật"
   ];
   List<String> _selectedJobCategories = [];
-
-  Future<void> _selectedDate(
-      BuildContext context, TextEditingController controller) async {
-    DateTime? picked = await showDatePicker(
-        context: context,
-        locale: context.locale,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100));
-    if (picked != null) {
-      setState(() {
-        controller.text = "${picked.day}/${picked.month}/${picked.year}";
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +46,7 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
             controller: _fromDateController,
             readOnly: true,
             onTap: () {
-              _selectedDate(context, _fromDateController);
+              selectedDate(context, _fromDateController);
             },
             decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -77,7 +62,7 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
             controller: _toDateController,
             readOnly: true,
             onTap: () {
-              _selectedDate(context, _toDateController);
+              selectedDate(context, _toDateController);
             },
             decoration: const InputDecoration(
                 border: OutlineInputBorder(),
