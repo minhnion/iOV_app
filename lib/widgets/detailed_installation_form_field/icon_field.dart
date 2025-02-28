@@ -1,13 +1,16 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:iov_app/utils/date_picker.dart';
 
 class IconField extends StatelessWidget {
   final String label;
   final IconData icon;
-  const IconField({super.key, required this.label, required this.icon});
+  final String keyField;
+  const IconField({super.key, required this.label, required this.icon, required this.keyField});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _dateController = TextEditingController();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
@@ -30,7 +33,9 @@ class IconField extends StatelessWidget {
                 ),
                 readOnly: true,
                 onTap: (){
-
+                  if(keyField=="date"){
+                    selectedDate(context, _dateController);
+                  }
                 }
             ),
           )

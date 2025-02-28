@@ -1,7 +1,6 @@
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:iov_app/screens/detailed_installation/detailed_installation.dart';
 import 'package:iov_app/widgets/categories_search/categories_search.dart';
 
 class SelectionFiled extends StatefulWidget {
@@ -13,6 +12,17 @@ class SelectionFiled extends StatefulWidget {
 }
 
 class _SelectionFiledState extends State<SelectionFiled> {
+  final List<String> _jobCategories = [
+    "Lắp đặt bản demo",
+    "Lắp đặt mới",
+    "Lắp đặt lại",
+    "Dán để di chuyển xe",
+    "Sửa chữa / khắc phục",
+    "Gỡ bỏ OneLink",
+    "Tháo tại khách hàng"
+  ];
+  List<String> _selectedJobCategories = [];
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -32,17 +42,19 @@ class _SelectionFiledState extends State<SelectionFiled> {
             child: TextField(
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                fillColor: Colors.grey.shade700
+                fillColor: Colors.grey.shade700,
+                hintText: _selectedJobCategories.isEmpty ?""
+                    :_selectedJobCategories.join(",")
               ),
               readOnly: true,
               onTap: (){
                 showDialog(context: context, builder: (context) {
                   return CategoriesSearch(
-                    categoriesList: [],
-                    selectedCategories: [],
-                    onSelectionChanged: (selectedCategories) {
+                    categoriesList: _jobCategories,
+                    selectedCategories: _selectedJobCategories,
+                    onSelectionChanged: (selected) {
                       setState(() {
-                        print("Danh mục đã chọn: $selectedCategories");
+                        _selectedJobCategories = selected;
                       });
                     },
                   );

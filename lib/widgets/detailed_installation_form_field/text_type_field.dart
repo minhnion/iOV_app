@@ -8,6 +8,7 @@ class TextTypeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController _textTypeController =  TextEditingController();
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: Row(
@@ -27,9 +28,7 @@ class TextTypeField extends StatelessWidget {
                     border: const OutlineInputBorder(),
                     fillColor: Colors.grey.shade700
                 ),
-                onTap: (){
-
-                }
+                controller: _textTypeController,
             ),
           )
         ],
