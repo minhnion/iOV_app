@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iov_app/screens/installation_screen/installation_screen.dart';
+import '../../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,7 +13,36 @@ class _LoginScreenState extends State<LoginScreen> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
+  bool _isLoading = false;
+  final AuthService _authService = AuthService();
 
+  Future<void> _handleLogin() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Đảm bảo thiết bị đã được đăng ký
+    await _authService.registerDevice();
+
+    String username = _usernameController.text.trim();
+    String password = _passwordController.text.trim();
+    bool success = await _authService.login(username, password);
+
+    setState(() {
+      _isLoading = false;
+    });
+
+    if (success) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const InstallationsScreen()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Đăng nhập thất bại, vui lòng thử lại!')),
+      );
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,13 +125,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   backgroundColor: const Color.fromRGBO(23, 150, 68, 100),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                onPressed: () {
-                  // call api login
-                },
-                child: const Text(
-                  'Đăng nhập',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
+                onPressed: _handleLogin,
+                child: _isLoading
+                    ? const CircularProgressIndicator(
+                        color: Colors.white) // Hiển thị loading
+                    : const Text(
+                        'Đăng nhập',
+                        style: TextStyle(fontSize: 16, color: Colors.white),
+                      ),
               ),
             ),
           ],

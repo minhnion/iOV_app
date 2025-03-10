@@ -45,5 +45,16 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<!-- Yêu cầu quyền sử dụng camera -->
+    	<key>NSCameraUsageDescription</key>
+    	<string>Ứng dụng cần quyền truy cập camera để quét mã vạch.</string>
+
+    	<!-- Yêu cầu quyền truy cập thư viện ảnh (nếu cần) -->
+    	<key>NSPhotoLibraryUsageDescription</key>
+    	<string>Ứng dụng cần quyền truy cập thư viện ảnh để chọn hình ảnh.</string>
+
+    	<!-- Yêu cầu quyền truy cập microphone (nếu sử dụng quay video) -->
+    	<key>NSMicrophoneUsageDescription</key>
+    	<string>Ứng dụng cần quyền truy cập microphone để quay video.</string>
 </dict>
 </plist>
