@@ -15,8 +15,8 @@ class BaseService {
   BaseService() {
     _dio.interceptors.add(InterceptorsWrapper(
       onRequest: (options, handler) async {
-        // Chỉ thêm Authorization header cho các API không phải login
-        if (options.path != '/auth/login-mobile') {
+        if (options.path != '/auth/login-mobile' && options.path != '/device/register-token') {
+          await _refreshAccessToken();
           String? accessToken = await _getAccessToken();
           if (accessToken != null && accessToken.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $accessToken';

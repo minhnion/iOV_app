@@ -6,7 +6,6 @@ import 'base_service.dart';
 class AuthService extends BaseService {
   Future<bool> registerDevice() async {
     try {
-      // Tạo thông tin thiết bị
       String deviceId = 'test_device_id_01';
       String deviceName = 'test_device_name_01';
       String deviceToken = 'test_device_token_01';
@@ -51,7 +50,6 @@ class AuthService extends BaseService {
         data: requestData,
         options: Options(
           headers: {
-            'Content-Type': 'application/json',
             'Device-Id': deviceId,
             'Device-Name': deviceName,
             'Device-Token': deviceToken,
@@ -66,12 +64,6 @@ class AuthService extends BaseService {
       }
       return false;
     } catch (e) {
-      if (e is DioException) {
-        print('Status code: ${e.response?.statusCode}');
-        print('Response data: ${e.response?.data}');
-        print('Request data: ${e.requestOptions.data}');
-        print('Request headers: ${e.requestOptions.headers}');
-      }
       print('Login error: $e');
       return false;
     }

@@ -21,7 +21,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    // Đảm bảo thiết bị đã được đăng ký
     await _authService.registerDevice();
 
     String username = _usernameController.text.trim();
@@ -31,18 +30,21 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = false;
     });
-
+    if (!mounted) return;
     if (success) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const InstallationsScreen()),
-      );
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const InstallationsScreen()),
+        );
+      }
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Đăng nhập thất bại, vui lòng thử lại!')),
       );
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
