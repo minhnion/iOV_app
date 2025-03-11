@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:iov_app/screens/detailed_installation/detailed_installation.dart';
 
+import '../../models/job.dart';
+
 class VehicleCard extends StatelessWidget {
-  final Map<String, String> item;
+  final Job item;
   const VehicleCard({super.key, required this.item});
 
   @override
@@ -17,8 +19,8 @@ class VehicleCard extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Row(
             children: [
-              Image.asset(
-                item['image']!,
+              Image.network(
+                item.segment_img,
                 width: 40,
                 height: 40,
               ),
@@ -28,15 +30,15 @@ class VehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item['title']!,
+                      item.vin_no,
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      item['subtitle']!,
+                      item.model,
                       style: const TextStyle(color: Colors.grey),
                     ),
                     Text(
-                      item['status']!,
+                      item.job_status,
                       style: const TextStyle(color: Colors.green),
                     ),
                   ],

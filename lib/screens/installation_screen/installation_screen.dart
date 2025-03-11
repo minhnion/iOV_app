@@ -1,5 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:iov_app/models/job.dart';
+import 'package:iov_app/services/job_service.dart';
 import 'package:iov_app/widgets/installation_search_form/installation_search_form.dart';
 import 'package:iov_app/widgets/menu_tab/menu_tab.dart';
 import 'package:iov_app/widgets/vehicle_card/vehicle_card.dart';
@@ -13,57 +15,35 @@ class InstallationsScreen extends StatefulWidget {
 
 class _InstallationsScreenState extends State<InstallationsScreen> {
 
-  // Dữ liệu mẫu cho danh sách cài đặt
-  final List<Map<String, String>> installations = [
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0F8S4102558',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã lắp xong',
-    },
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0F6S4102560',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã cập nhật',
-    },
-    {
-      'image': 'assets/img/fg_logo.png',
-      'title': 'RNJFG8JT8SXX10190',
-      'subtitle': 'FG8JT8A-PGX',
-      'status': 'Đã lắp xong',
-    },
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0FXS4102562',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã lắp xong',
-    },
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0F8S4102561',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã lắp xong',
-    },
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0FXS4102559',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã lắp xong',
-    },
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0F1S4102563',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã lắp xong',
-    },
-    {
-      'image': 'assets/img/xzu_logo.png',
-      'title': 'RNJYCS0F8S4102558',
-      'subtitle': 'XZU720L-WKFRS3',
-      'status': 'Đã cập nhật',
-    },
-  ];
+  List<Job> installations = [];
+  bool isLoading = true;
+  int size = 10;
+  int currentPage = 1;
+  late int totalRecords;
+
+  Future<void> fetchInstallations() async {
+    try {
+      JobResponse jobResponse = await JobService().getJob(fromDate: "2024-10-07");
+      List<Job> fetchData = jobResponse.jobs;
+      totalRecords = jobResponse.totalRecords;
+      setState(() {
+        installations = fetchData;
+        isLoading = false;
+      });
+    } catch (e) {
+      print('Error: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchInstallations();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +109,8 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
 
         });
       },),
-      body: ListView(
+      body: isLoading? const Center(child: CircularProgressIndicator(color: Colors.black,))
+          :ListView(
         children: [
           Row(
             children: [
