@@ -9,6 +9,6 @@ Future<void> selectedDate(BuildContext context, TextEditingController controller
       firstDate: DateTime(2000),
       lastDate: DateTime(2100));
   if (picked != null) {
-    controller.text = "${picked.year}/${picked.month}/${picked.day}";
+    controller.text = "${picked.year}-${picked.month}-${picked.day}";
   }
 }

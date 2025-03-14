@@ -4,7 +4,8 @@ import 'package:iov_app/widgets/categories_search/categories_search.dart';
 import '../../utils/date_picker.dart';
 
 class InstallationSearchForm extends StatefulWidget {
-  const InstallationSearchForm({super.key});
+  final Function(String imeiNumber, String fromDate, String toDate, String status) onSearch;
+  const InstallationSearchForm({super.key , required this.onSearch});
 
   @override
   State<InstallationSearchForm> createState() => _InstallationSearchFormState();
@@ -22,6 +23,13 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
     "Đã cập nhật"
   ];
   List<String> _selectedJobCategories = [];
+
+  String _getSelectedJobs() {
+    if (_selectedJobCategories.isEmpty) {
+      return '';
+    }
+    return _selectedJobCategories.join(",");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,7 +140,15 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
                         foregroundColor: Colors.white,
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8))),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context);
+                      widget.onSearch(
+                        _imeiController.text.trim(),
+                        _fromDateController.text.trim(),
+                        _toDateController.text.trim(),
+                        _getSelectedJobs()
+                      );
+                    },
                     child: const Text(
                       "Tìm kiếm",
                     )),

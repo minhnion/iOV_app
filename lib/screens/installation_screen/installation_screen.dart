@@ -20,13 +20,32 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
   int size = 10;
   int currentPage = 1;
   late int totalRecords;
+  String fromDate = '';
+  String toDate = '';
+  String status = '';
+  String search = '';
+
+  void handleSearch(String searchKey, String from_date, String to_date, String sta){
+    setState(() {
+      search = searchKey;
+      fromDate = from_date;
+      toDate = to_date;
+      status = sta;
+    });
+    fetchInstallations();
+  }
 
   Future<void> fetchInstallations() async {
     try {
       setState(() {
         isLoading = true;
       });
-      JobResponse jobResponse = await JobService().getJob(fromDate: "2024-10-07");
+      JobResponse jobResponse = await JobService().getJob(
+        search: search,
+        fromDate: fromDate,
+        toDate: toDate,
+        status: status,
+      );
       setState(() {
         installations = jobResponse.jobs;
         totalRecords = jobResponse.totalRecords;
@@ -95,15 +114,17 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
               showModalBottomSheet(
                   context: context,
                   builder: (context){
-                    return const InstallationSearchForm();
+                    return InstallationSearchForm(
+                      onSearch: handleSearch,
+                    );
                   }
               );
             },
           ),
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.black),
-            onPressed: () async {
-              await fetchInstallations();
+            onPressed: () {
+              fetchInstallations();
             },
           ),
         ],
