@@ -1,22 +1,22 @@
 class Job {
-  final String imei_no;
-  final String installation_date;
-  final String installation_location;
-  final int job_id;
-  final String job_status;
-  final String model;
-  final String segment_img;
-  final String vin_no;
+  final String ?imei_no;
+  final String ?installation_date;
+  final String ?installation_location;
+  final int ?job_id;
+  final String ?job_status;
+  final String ?model;
+  final String ?segment_img;
+  final String ?vin_no;
 
   Job({
-    required this.imei_no,
-    required this.installation_date,
-    required this.installation_location,
-    required this.job_id,
-    required this.job_status,
-    required this.model,
-    required this.segment_img,
-    required this.vin_no,
+    this.imei_no,
+    this.installation_date,
+    this.installation_location,
+    this.job_id,
+    this.job_status,
+    this.model,
+    this.segment_img,
+    this.vin_no,
   });
 
   factory Job.fromJson(Map<String, dynamic> json) {

@@ -23,11 +23,13 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
 
   Future<void> fetchInstallations() async {
     try {
-      JobResponse jobResponse = await JobService().getJob(fromDate: "2024-10-07");
-      List<Job> fetchData = jobResponse.jobs;
-      totalRecords = jobResponse.totalRecords;
       setState(() {
-        installations = fetchData;
+        isLoading = true;
+      });
+      JobResponse jobResponse = await JobService().getJob(fromDate: "2024-10-07");
+      setState(() {
+        installations = jobResponse.jobs;
+        totalRecords = jobResponse.totalRecords;
         isLoading = false;
       });
     } catch (e) {
@@ -100,7 +102,9 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
           ),
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.black),
-            onPressed: () {},
+            onPressed: () async {
+              await fetchInstallations();
+            },
           ),
         ],
       ),
@@ -110,28 +114,28 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
         });
       },),
       body: isLoading? const Center(child: CircularProgressIndicator(color: Colors.black,))
-          :ListView(
-        children: [
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Text(
-                  DateFormat('yyyy-MM-dd').format(DateTime.now()),
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          : ListView(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        DateFormat('yyyy-MM-dd').format(DateTime.now()),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18),
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius: 12,
+                      backgroundColor: Colors.grey,
+                      child: Text(installations.length.toString()),
+                    )
+                  ],
                 ),
-              ),
-
-              CircleAvatar(
-                radius: 12,
-                backgroundColor: Colors.grey,
-                child: Text(installations.length.toString()),
-              )
-            ],
-          ),
-          ...installations.map((item) => VehicleCard(item: item)),
-        ],
-      ),
+                ...installations.map((item) => VehicleCard(item: item)),
+              ],
+            ),
     );
   }
 

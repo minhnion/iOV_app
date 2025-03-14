@@ -20,7 +20,7 @@ class VehicleCard extends StatelessWidget {
           child: Row(
             children: [
               Image.network(
-                item.segment_img,
+                item.segment_img!,
                 width: 40,
                 height: 40,
               ),
@@ -30,15 +30,15 @@ class VehicleCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      item.vin_no,
+                      item.vin_no??"Null",
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      item.model,
+                      item.model??"Null",
                       style: const TextStyle(color: Colors.grey),
                     ),
                     Text(
-                      item.job_status,
+                      item.job_status??"Null",
                       style: const TextStyle(color: Colors.green),
                     ),
                   ],
