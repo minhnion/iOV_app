@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:iov_app/models/kpi.dart';
+import 'package:iov_app/services/kpi_service.dart';
 import 'package:iov_app/widgets/kpi_card/kpi_per_month_card.dart';
 import 'package:iov_app/widgets/menu_tab/menu_tab.dart';
 
@@ -12,25 +14,33 @@ class KpiScreen extends StatefulWidget {
 }
 
 class _KpiScreenState extends State<KpiScreen> {
+  bool isLoading = true;
+  late KpiData kpis;
 
-  // Dữ liệu mẫu cho danh sách cài đặt
-  List<Map<String, String>> kpisPerMonth = [
-    {
-      'time': 'Thang 1 - 2025',
-      'planned': '0',
-      'actual': '0',
-    },
-    {
-      'time': 'Thang 12 - 2024',
-      'planned': '0',
-      'actual': '0',
-    },
-    {
-      'time': 'Thang 11 - 2024',
-      'planned': '0',
-      'actual': '0',
-    },
-  ];
+  Future<void> fetchKpi() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      KpiData result = await KpiService().getKpi();
+      setState(() {
+        kpis = result;
+      });
+    } catch (e) {
+      print('Error: $e');
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO: implement initState
+    fetchKpi();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,65 +56,74 @@ class _KpiScreenState extends State<KpiScreen> {
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh, color: Colors.black),
-            onPressed: () {},
+            onPressed: () {
+              fetchKpi();
+            },
           ),
         ],
       ),
-      drawer: MenuTab(selectedMenu: "Kpi", onLanguageChanged: () {
-        setState(() {
-
-        });
-      },),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              "Tổng quan",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Row(
-              children: [
-                Expanded(
-                  child: KpiGeneralCard(
-                    title: "KPI hàng ngày",
-                    value: "0 / 0",
-                    icon: Icons.library_books_sharp,
-                    color: Colors.blue.shade100,
-                    iconColor: Colors.blue,
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: KpiGeneralCard(
-                    title: "KPI hàng tháng",
-                    value: "25 / 29",
-                    icon: Icons.stacked_bar_chart_outlined,
-                    color: Colors.lightGreen.shade100,
-                    iconColor: Colors.blue,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              "Chi tiết KPI (3 tháng gần nhất)",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-            ...kpisPerMonth.map((item) => KpiPerMonthCard(item: item,))
-          ],
-        ),
+      drawer: MenuTab(
+        selectedMenu: "Kpi",
+        onLanguageChanged: () {
+          setState(() {});
+        },
       ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: Colors.black,
+            ))
+          : Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Tổng quan",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: KpiGeneralCard(
+                          title: "KPI hàng ngày",
+                          value: "${kpis.actualDaily}/${kpis.planDaily}",
+                          icon: Icons.library_books_sharp,
+                          color: Colors.blue.shade100,
+                          iconColor: Colors.blue,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: KpiGeneralCard(
+                          title: "KPI hàng tháng",
+                          value: "${kpis.actualMonthly}/${kpis.planMonthly}",
+                          icon: Icons.stacked_bar_chart_outlined,
+                          color: Colors.lightGreen.shade100,
+                          iconColor: Colors.blue,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  const Text(
+                    "Chi tiết KPI (3 tháng gần nhất)",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  ...kpis.kpi3Months.map((item) => KpiPerMonthCard(
+                        item: item,
+                      ))
+                ],
+              ),
+            ),
     );
   }
-
 }

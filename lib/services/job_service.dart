@@ -15,10 +15,10 @@ class JobService extends BaseService {
       Map<String, dynamic> queryParams = {
         'page': page,
         'size': size,
-        if (search != null && search.isNotEmpty) 'search': search,
-        if (status != null && status.isNotEmpty) 'status': status,
-        if (fromDate != null && fromDate.isNotEmpty) 'from_date': fromDate,
-        if (toDate != null && toDate.isNotEmpty) 'to_date': toDate,
+        'search': search,
+        'status': status,
+        'from_date': fromDate,
+        'to_date': toDate,
       };
       Response? response = await getRequest('/job/search', queryParams: queryParams);
 

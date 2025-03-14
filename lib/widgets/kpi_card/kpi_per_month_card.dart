@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:iov_app/models/kpi.dart';
 
 class KpiPerMonthCard extends StatelessWidget {
-  final Map<String, String> item;
+  final KpiPerMonth item;
 
   const KpiPerMonthCard({
     super.key,
@@ -35,13 +36,13 @@ class KpiPerMonthCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    item["time"]!,
+                    '${item.month} - ${item.year}',
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Text("Kế hoạch: ${item["planned"]!} | Thực tế: ${item["actual"]!}"),
+                  Text("Kế hoạch: ${item.plan} | Thực tế: ${item.actual}"),
                 ],
               ),
             ),
