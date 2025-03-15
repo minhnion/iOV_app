@@ -5,7 +5,8 @@ import 'package:iov_app/widgets/categories_search/categories_search.dart';
 
 class SelectionFiled extends StatefulWidget {
   final String label;
-  const SelectionFiled({super.key, required this.label});
+  final String initialValue;
+  const SelectionFiled({super.key, required this.label,this.initialValue = '',});
 
   @override
   State<SelectionFiled> createState() => _SelectionFiledState();
@@ -22,7 +23,13 @@ class _SelectionFiledState extends State<SelectionFiled> {
     "Tháo tại khách hàng"
   ];
   List<String> _selectedJobCategories = [];
-
+  @override
+  void initState() {
+    super.initState();
+    _selectedJobCategories = widget.initialValue.isNotEmpty
+        ? [widget.initialValue]
+        : [];
+  }
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,6 +61,7 @@ class _SelectionFiledState extends State<SelectionFiled> {
                     selectedCategories: _selectedJobCategories,
                     onSelectionChanged: (selected) {
                       setState(() {
+                        dispose();
                         _selectedJobCategories = selected;
                       });
                     },

@@ -2,7 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/screens/installation_screen/installation_screen.dart';
 import 'package:iov_app/screens/kpi_screen/kpi_screen.dart';
+import 'package:iov_app/screens/login_screen/login_screen.dart';
 import 'package:iov_app/screens/profile_screen/profile_screen.dart';
+import 'package:iov_app/services/auth_service.dart';
 import 'package:iov_app/utils/change_language.dart';
 import 'package:iov_app/widgets/confirm_inform/confirm_inform.dart';
 
@@ -24,6 +26,17 @@ class _MenuTabState extends State<MenuTab> {
       });
       widget.onLanguageChanged();
     });
+  }
+
+  Future<void> handleLogout() async{
+    try{
+      await AuthService().logout();
+      if(mounted){
+        Navigator.push(context, MaterialPageRoute(builder: (context)=> const LoginScreen()));
+      }
+    }catch(e){
+      print('Error: $e');
+    }
   }
 
   @override
@@ -197,9 +210,10 @@ class _MenuTabState extends State<MenuTab> {
               showDialog(
                   context: context,
                   builder: (context) {
-                    return const ConfirmInform(
+                    return  ConfirmInform(
                       title: 'Xác nhận đăng xuất',
                       content: 'Bạn có muốn đăng xuất không?',
+                      onConfirm: handleLogout,
                     );
                   }
               );

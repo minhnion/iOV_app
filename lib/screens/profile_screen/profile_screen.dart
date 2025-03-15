@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../widgets/build_profile_item/build_profile_item.dart';
 import '../../widgets/menu_tab/menu_tab.dart';
@@ -11,6 +12,32 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  late String userName;
+  late String fullName;
+  late String roleName;
+  late String phoneNumber;
+  late String address;
+  late String email;
+  late String gender;
+  late String dateOfBirth;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getInformation();
+  }
+  Future<void> getInformation () async{
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    userName = prefs.getString('userName')??'';
+    fullName = prefs.getString('fullName')??'';
+    roleName = prefs.getString('roleName')??'';
+    phoneNumber = prefs.getString('phoneNumber')??'';
+    address = prefs.getString('address')??'';
+    email = prefs.getString('email')??'';
+    gender = prefs.getString('gender')??'';
+    dateOfBirth = prefs.getString('dateOfBirth')??'';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,13 +84,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 24),
-              const BuildProfileItem(label: "Tên người dùng", value: "quynhlx"),
-              const BuildProfileItem(label: "Tên thật", value: "quynhlx"),
-              const BuildProfileItem(label: "Biệt danh", value: "N/A"),
-              const BuildProfileItem(label: "Chức vụ", value: "TECHNICIAN"),
-              const BuildProfileItem(label: "Số điện thoại", value: "0912345678"),
-              const BuildProfileItem(label: "Số điện thoại dự phòng", value: "N/A"),
-              const BuildProfileItem(label: "Email", value: "quynhlx@gmail.com"),
+              BuildProfileItem(label: "Tên người dùng", value: userName),
+              BuildProfileItem(label: "Tên thật", value: fullName),
+              BuildProfileItem(label: "Biệt danh", value: "N/A"),
+              BuildProfileItem(label: "Chức vụ", value: roleName),
+              BuildProfileItem(label: "Số điện thoại", value: phoneNumber),
+              BuildProfileItem(label: "Số điện thoại dự phòng", value: "N/A"),
+              BuildProfileItem(label: "Email", value: email),
             ],
           ),
         ),

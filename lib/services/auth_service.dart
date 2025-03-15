@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'base_service.dart';
@@ -66,6 +67,36 @@ class AuthService extends BaseService {
     } catch (e) {
       print('Login error: $e');
       return false;
+    }
+  }
+
+  Future<void> logout() async{
+    try{
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.remove('accessToken');
+      prefs.remove('refreshToken');
+      prefs.remove('device_id');
+      prefs.remove('device_name');
+      prefs.remove('device_token');
+    }catch(e){
+      throw Exception(e);
+    }
+  }
+
+  Future<void> decodeAccessToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? accessToken = prefs.getString('accessToken');
+    if(accessToken!=null){
+      Map<String,dynamic> decodedToken = JwtDecoder.decode(accessToken);
+      print(decodedToken);
+      prefs.setString('userName', decodedToken['user_name']);
+      prefs.setString('fullName', decodedToken['full_name']);
+      prefs.setString('roleName', decodedToken['role_name']);
+      prefs.setString('phoneNumber', decodedToken['phone_number']);
+      prefs.setString('address', decodedToken['address']);
+      prefs.setString('email', decodedToken['email']);
+      prefs.setString('gender', decodedToken['gender']);
+      prefs.setString('dateOfBirth', decodedToken['date_of_birth']);
     }
   }
 }

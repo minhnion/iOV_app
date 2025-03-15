@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import '../models/detailed_installation.dart';
 import '../models/job.dart';
 import 'base_service.dart';
 
@@ -29,5 +30,17 @@ class JobService extends BaseService {
       print('Error fetching jobs: $e');
     }
     return JobResponse(jobs: [], totalRecords: 0);
+  }
+
+  Future<DetailedInstallation?> getDetailedInstallation(int jobId) async {
+    try{
+      final response = await getRequest('/job/$jobId');
+      if(response!=null && response.statusCode == 200) {
+        return DetailedInstallation.fromJson(response.data['data']);
+      }
+    }catch(e){
+      throw Exception('Error: $e');
+    }
+    return null;
   }
 }

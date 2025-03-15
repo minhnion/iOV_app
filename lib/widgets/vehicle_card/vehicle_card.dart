@@ -11,7 +11,7 @@ class VehicleCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=>const DetailedInstallation()));
+        Navigator.push(context, MaterialPageRoute(builder: (context)=>DetailedInstallationScreen(jobId: item.job_id!)));
       },
       child: Card(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

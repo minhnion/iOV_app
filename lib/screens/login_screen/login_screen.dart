@@ -32,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
     if (!mounted) return;
     if (success) {
+      await _authService.decodeAccessToken();
       if (mounted) {
         Navigator.pushReplacement(
           context,

@@ -1,18 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:iov_app/services/job_service.dart';
 import 'package:iov_app/widgets/detailed_installation_form_field/icon_field.dart';
 import 'package:iov_app/widgets/detailed_installation_form_field/image_camera_field.dart';
 import 'package:iov_app/widgets/detailed_installation_form_field/selection_filed.dart';
-import 'package:iov_app/widgets/detailed_installation_form_field/text_type_field.dart';
+
+import '../../models/detailed_installation.dart';
 
 
-class DetailedInstallation extends StatefulWidget {
-  const DetailedInstallation({super.key});
+class DetailedInstallationScreen extends StatefulWidget {
+  const DetailedInstallationScreen({super.key, required this.jobId});
+  final int jobId;
   @override
-  State<DetailedInstallation> createState() => _DetailedInstallationState();
+  State<DetailedInstallationScreen> createState() => _DetailedInstallationScreenState();
 }
 
-class _DetailedInstallationState extends State<DetailedInstallation> {
+class _DetailedInstallationScreenState extends State<DetailedInstallationScreen> {
+  bool isLoading = true;
+  late DetailedInstallation detailed;
 
+  Future<void> fetchDetailedInstallation() async {
+    try{
+      print('111');
+      final data = await JobService().getDetailedInstallation(widget.jobId);
+      print(222);
+      setState(() {
+        isLoading = false;
+        detailed = data!;
+      });
+    }catch(e){
+      setState(() {
+        isLoading = false;
+      });
+      print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    fetchDetailedInstallation();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,34 +55,76 @@ class _DetailedInstallationState extends State<DetailedInstallation> {
           },
         ),
         centerTitle: true,
-        title: const Text(
-          'RNJYCS0F8S4102558',
-          style: TextStyle(color: Colors.black),
+        title: isLoading? const Text('...'):
+        Text(
+          detailed.vinNo?? '',
+          style: const TextStyle(color: Colors.black),
         ),
+
       ),
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SelectionFiled(label: "Loại cài đặt"),
-              IconField(label: 'Ghi chú', keyField: "note"),
-              IconField(label: "Ngày cài đặt", icon: Icons.calendar_today, keyField: 'date',),
-              IconField(label: "Vị trí cài đặt", icon: Icons.location_on, keyField: 'location',),
-              IconField(label: "ODO (km)", keyField: "odo"),
-              ImageCameraField(label: 'Ảnh thông tin xe'),
-              ImageCameraField(label: 'Ảnh thiết bị và sim'),
-              ImageCameraField(label: 'Ảnh lắp đặt'),
-              ImageCameraField(label: 'Ảnh thiết bị sau lắp đặt'),
-              ImageCameraField(label: 'Ảnh trạng thái thiết bị'),
-              IconField(label: "Số sim", icon: Icons.document_scanner_outlined, keyField: 'barcode',),
-              IconField(label: "Số imei", icon: Icons.document_scanner_outlined, keyField: 'barcode',),
-              SizedBox(height: 20),
-            ],
-          ),
-        ),
-      ),
+      body: isLoading
+          ? const Center(
+            child: CircularProgressIndicator(
+                color: Colors.black,
+              ),
+          )
+          : Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SelectionFiled(
+                      label: "Loại cài đặt",
+                      initialValue: detailed.installationType ?? '',
+                    ),
+                    IconField(
+                      label: 'Ghi chú',
+                      keyField: "note",
+                      initialValue: detailed.note??'',
+                    ),
+                    IconField(
+                      label: "Ngày cài đặt",
+                      icon: Icons.calendar_today,
+                      keyField: 'date',
+                      initialValue: detailed.installationDate??'',
+                    ),
+                    IconField(
+                      label: "Vị trí cài đặt",
+                      icon: Icons.location_on,
+                      keyField: 'location',
+                      initialValue: detailed.installationLocation??'',
+                    ),
+                    IconField(
+                      label: "ODO (km)",
+                      keyField: "odo",
+                      initialValue: detailed.odometerReading??'',
+                    ),
+                    ImageCameraField(
+                      label: 'Ảnh thông tin xe',
+                      imagePaths: detailed.vehicleInforImgPaths??[],
+                    ),
+                    const ImageCameraField(label: 'Ảnh thiết bị và sim'),
+                    const ImageCameraField(label: 'Ảnh lắp đặt'),
+                    const ImageCameraField(label: 'Ảnh thiết bị sau lắp đặt'),
+                    const ImageCameraField(label: 'Ảnh trạng thái thiết bị'),
+                    IconField(
+                      label: "Số sim",
+                      icon: Icons.document_scanner_outlined,
+                      keyField: 'barcode',
+                      initialValue: detailed.simNo??'',
+                    ),
+                    IconField(
+                      label: "Số imei",
+                      icon: Icons.document_scanner_outlined,
+                      keyField: 'barcode',
+                      initialValue: detailed.imeiNo??'',
+                    ),
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
           border: Border(
