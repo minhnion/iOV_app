@@ -17,7 +17,7 @@ class BaseService {
       onRequest: (options, handler) async {
         if (options.path != '/auth/login-mobile' && options.path != '/device/register-token'
         && options.path != '/auth/refresh-token') {
-          await _refreshAccessToken();
+          await refreshAccessToken();
           String? accessToken = await _getAccessToken();
           if (accessToken != null && accessToken.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $accessToken';
@@ -58,7 +58,7 @@ class BaseService {
   }
 
   // Refresh accessToken
-  Future<void> _refreshAccessToken() async {
+  Future<void> refreshAccessToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? refreshToken = prefs.getString('refreshToken');
 

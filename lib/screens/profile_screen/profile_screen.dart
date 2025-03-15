@@ -20,6 +20,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late String email;
   late String gender;
   late String dateOfBirth;
+  bool isLoading = true;
 
   @override
   void initState() {
@@ -37,6 +38,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     email = prefs.getString('email')??'';
     gender = prefs.getString('gender')??'';
     dateOfBirth = prefs.getString('dateOfBirth')??'';
+    setState(() {
+      isLoading = false;
+    });
   }
 
   @override
@@ -62,39 +66,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
         });
       },),
-      body: Container(
-        color: Colors.white,
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              Center(
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.grey.shade300,
-                  ),
-                  child: Icon(
-                    Icons.person,
-                    size: 60,
-                    color: Colors.grey.shade500,
-                  ),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+              color: Colors.black,
+            ))
+          : Container(
+              color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  children: [
+                    Center(
+                      child: Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.grey.shade300,
+                        ),
+                        child: Icon(
+                          Icons.person,
+                          size: 60,
+                          color: Colors.grey.shade500,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    BuildProfileItem(label: "Tên người dùng", value: userName),
+                    BuildProfileItem(label: "Tên thật", value: fullName),
+                    BuildProfileItem(label: "Biệt danh", value: "N/A"),
+                    BuildProfileItem(label: "Chức vụ", value: roleName),
+                    BuildProfileItem(
+                        label: "Số điện thoại", value: phoneNumber),
+                    BuildProfileItem(
+                        label: "Số điện thoại dự phòng", value: "N/A"),
+                    BuildProfileItem(label: "Email", value: email),
+                  ],
                 ),
               ),
-              const SizedBox(height: 24),
-              BuildProfileItem(label: "Tên người dùng", value: userName),
-              BuildProfileItem(label: "Tên thật", value: fullName),
-              BuildProfileItem(label: "Biệt danh", value: "N/A"),
-              BuildProfileItem(label: "Chức vụ", value: roleName),
-              BuildProfileItem(label: "Số điện thoại", value: phoneNumber),
-              BuildProfileItem(label: "Số điện thoại dự phòng", value: "N/A"),
-              BuildProfileItem(label: "Email", value: email),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

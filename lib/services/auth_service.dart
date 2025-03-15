@@ -84,6 +84,7 @@ class AuthService extends BaseService {
   }
 
   Future<void> decodeAccessToken() async {
+    await refreshAccessToken();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? accessToken = prefs.getString('accessToken');
     if(accessToken!=null){
