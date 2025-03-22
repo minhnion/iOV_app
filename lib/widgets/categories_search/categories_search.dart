@@ -18,11 +18,36 @@ class CategoriesSearch extends StatefulWidget {
 
 class _CategoriesSearchState extends State<CategoriesSearch> {
   late List<String> _tempSelectedCategories;
+  late List<String> _filteredCategories;
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     _tempSelectedCategories = List.from(widget.selectedCategories);
+    _filteredCategories = List.from(widget.categoriesList);
+
+    _searchController.addListener(_filterCategories);
+  }
+
+  @override
+  void dispose() {
+    _searchController.removeListener(_filterCategories);
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterCategories() {
+    final searchText = _searchController.text.toLowerCase();
+    setState(() {
+      if (searchText.isEmpty) {
+        _filteredCategories = List.from(widget.categoriesList);
+      } else {
+        _filteredCategories = widget.categoriesList
+            .where((category) => category.toLowerCase().contains(searchText))
+            .toList();
+      }
+    });
   }
 
   @override
@@ -35,6 +60,7 @@ class _CategoriesSearchState extends State<CategoriesSearch> {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextFormField(
+              controller: _searchController,
               decoration: InputDecoration(
                   hintText: 'Tìm kiếm',
                   border: const OutlineInputBorder(),
@@ -46,18 +72,20 @@ class _CategoriesSearchState extends State<CategoriesSearch> {
             SizedBox(
               height: 500,
               child: ListView.builder(
-                itemCount: widget.categoriesList.length,
+                itemCount: _filteredCategories.length,
                 itemBuilder: (context, index) {
-                  final category = widget.categoriesList[index];
+                  final category = _filteredCategories[index];
+                  final isSelected = _tempSelectedCategories.contains(category);
                   return CheckboxListTile(
                     controlAffinity: ListTileControlAffinity.leading,
                     title: Text(category),
-                    value: _tempSelectedCategories.contains(category),
+                    value: isSelected,
                     onChanged: (bool? value) {
                       setState(() {
                         if (value == true) {
-                          _tempSelectedCategories.add(category);
-                        } else {
+                          if (!_tempSelectedCategories.contains(category)) {
+                            _tempSelectedCategories.add(category);
+                          }                        } else {
                           _tempSelectedCategories.remove(category);
                         }
                       });

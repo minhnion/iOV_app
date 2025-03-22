@@ -9,6 +9,7 @@ class IconField extends StatefulWidget {
   final String keyField;
   final String initialValue;
   final bool isEditable;
+  final Function(String) onValueChanged;
 
   const IconField(
       {super.key,
@@ -16,7 +17,8 @@ class IconField extends StatefulWidget {
       this.icon,
       required this.keyField,
       this.initialValue = '',
-      this.isEditable = false});
+      this.isEditable = false,
+      required this.onValueChanged});
 
   @override
   State<IconField> createState() => _IconFieldState();
@@ -29,12 +31,19 @@ class _IconFieldState extends State<IconField> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue);
+
+    _controller.addListener(_onTextChanged);
   }
 
   @override
   void dispose() {
+    _controller.removeListener(_onTextChanged);
     _controller.dispose();
     super.dispose();
+  }
+
+  void _onTextChanged() {
+    widget.onValueChanged(_controller.text);
   }
 
   @override

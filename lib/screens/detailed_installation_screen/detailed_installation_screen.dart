@@ -21,6 +21,7 @@ class _DetailedInstallationScreenState
   bool isLoading = true;
   bool isEdit = false;
   late DetailedInstallation detailed;
+  Map<String, dynamic> updatedFields = {};
 
   Future<void> fetchDetailedInstallation() async {
     try {
@@ -46,7 +47,19 @@ class _DetailedInstallationScreenState
       print("Cannot edit");
     }
   }
-
+  
+  void updateFieldValue(String fieldName, dynamic value) {
+    setState(() {
+      updatedFields[fieldName] = value;
+    });
+  }
+  
+  Future<void> saveChanges() async {
+    if(updatedFields.isEmpty) return;
+    print('111');
+    print(updatedFields);
+    //call api
+  }
 
   @override
   void initState() {
@@ -90,13 +103,19 @@ class _DetailedInstallationScreenState
                     SelectionFiled(
                       label: "Loại cài đặt",
                       initialValue: detailed.installationType ?? '',
-                      isEditable: isEdit,
+                      isEditable: isEdit, 
+                      onValueChanged: (value) {
+                        updateFieldValue('installation_type', value);
+                      },
                     ),
                     IconField(
                       label: 'Ghi chú',
                       keyField: "note",
                       initialValue: detailed.note ?? '',
                       isEditable: isEdit,
+                      onValueChanged: (value) {
+                        updateFieldValue('note', value);
+                      },
                     ),
                     IconField(
                       label: "Ngày cài đặt",
@@ -104,6 +123,9 @@ class _DetailedInstallationScreenState
                       keyField: 'date',
                       initialValue: detailed.installationDate ?? '',
                       isEditable: isEdit,
+                      onValueChanged: (value) {
+                        updateFieldValue('installation_date', value);
+                      },
                     ),
                     IconField(
                       label: "Vị trí cài đặt",
@@ -111,12 +133,18 @@ class _DetailedInstallationScreenState
                       keyField: 'location',
                       initialValue: detailed.installationLocation ?? '',
                       isEditable: isEdit,
+                      onValueChanged: (value) {
+                        updateFieldValue('installation_location', value);
+                      },
                     ),
                     IconField(
                       label: "ODO (km)",
                       keyField: "odo",
                       initialValue: detailed.odometerReading ?? '',
                       isEditable: isEdit,
+                      onValueChanged: (value) {
+                        updateFieldValue('odometer_reading', value);
+                      },
                     ),
                     ImageCameraField(
                       label: 'Ảnh thông tin xe',
@@ -149,6 +177,9 @@ class _DetailedInstallationScreenState
                       keyField: 'barcode',
                       initialValue: detailed.simNo ?? '',
                       isEditable: isEdit,
+                      onValueChanged: (value) {
+                        updateFieldValue('sim_no', value);
+                      },
                     ),
                     IconField(
                       label: "Số imei",
@@ -156,6 +187,9 @@ class _DetailedInstallationScreenState
                       keyField: 'barcode',
                       initialValue: detailed.imeiNo ?? '',
                       isEditable: isEdit,
+                      onValueChanged: (value) {
+                        updateFieldValue('imei_no', value);
+                      },
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -178,14 +212,24 @@ class _DetailedInstallationScreenState
               children: isEdit
                   ? [
                 TextButton(
-                  onPressed: toggleEditMode,
+                  onPressed: () {
+                    setState(() {
+                      updatedFields.clear();
+                      isEdit = false;
+                    });
+                  },
                   child: const Text(
                     'Hủy',
                     style: TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ),
                 TextButton(
-                  onPressed: toggleEditMode,
+                  onPressed: () {
+                    saveChanges();
+                    setState(() {
+                      isEdit = false;
+                    });
+                  },
                   child: const Text(
                     'Lưu',
                     style: TextStyle(fontSize: 16, color: Colors.green),

@@ -7,7 +7,15 @@ class SelectionFiled extends StatefulWidget {
   final String label;
   final String initialValue;
   final bool isEditable;
-  const SelectionFiled({super.key, required this.label,this.initialValue = '',this.isEditable = false,});
+  final Function(String) onValueChanged;
+
+  const SelectionFiled({
+    super.key,
+    required this.label,
+    this.initialValue = '',
+    this.isEditable = false,
+    required this.onValueChanged,
+  });
 
   @override
   State<SelectionFiled> createState() => _SelectionFiledState();
@@ -16,7 +24,7 @@ class SelectionFiled extends StatefulWidget {
 class _SelectionFiledState extends State<SelectionFiled> {
   final List<String> _jobCategories = [
     "Lắp đặt bản demo",
-    "Lắp đặt mới",
+    "New Install",
     "Lắp đặt lại",
     "Dán để di chuyển xe",
     "Sửa chữa / khắc phục",
@@ -27,9 +35,16 @@ class _SelectionFiledState extends State<SelectionFiled> {
   @override
   void initState() {
     super.initState();
-    _selectedJobCategories = widget.initialValue.isNotEmpty
-        ? [widget.initialValue]
-        : [];
+    if (widget.initialValue.isNotEmpty) {
+      if (_jobCategories.contains(widget.initialValue)) {
+        _selectedJobCategories = [widget.initialValue];
+      } else {
+        final values = widget.initialValue.split(',');
+        _selectedJobCategories = values.where((value) =>
+            _jobCategories.contains(value.trim())
+        ).toList();
+      }
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -65,6 +80,12 @@ class _SelectionFiledState extends State<SelectionFiled> {
                     onSelectionChanged: (selected) {
                       setState(() {
                         _selectedJobCategories = selected;
+
+                        if(selected.isNotEmpty) {
+                          widget.onValueChanged(selected.join(','));
+                        } else {
+                          widget.onValueChanged('');
+                        }
                       });
                     },
                   );
