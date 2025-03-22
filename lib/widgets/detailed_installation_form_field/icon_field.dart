@@ -8,10 +8,15 @@ class IconField extends StatefulWidget {
   final IconData? icon;
   final String keyField;
   final String initialValue;
-
+  final bool isEditable;
 
   const IconField(
-      {super.key, required this.label, this.icon, required this.keyField, this.initialValue = ''});
+      {super.key,
+      required this.label,
+      this.icon,
+      required this.keyField,
+      this.initialValue = '',
+      this.isEditable = false});
 
   @override
   State<IconField> createState() => _IconFieldState();
@@ -31,7 +36,6 @@ class _IconFieldState extends State<IconField> {
     _controller.dispose();
     super.dispose();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,24 +57,31 @@ class _IconFieldState extends State<IconField> {
               controller: _controller,
               decoration: InputDecoration(
                   border: const OutlineInputBorder(),
-                  fillColor: Colors.grey.shade700,
-                  suffixIcon: widget.icon != null
+                  fillColor:
+                      widget.isEditable ? Colors.white : Colors.grey.shade200,
+                  filled: !widget.isEditable,
+                  suffixIcon: widget.icon != null && widget.isEditable
                       ? IconButton(
                           icon: Icon(widget.icon),
-                          onPressed: () async{
+                          onPressed: () async {
                             if (widget.keyField == "date") {
                               selectedDate(context, _controller);
                             }
-                            if(widget.keyField == "barcode"){
+                            if (widget.keyField == "barcode") {
                               String? result = await scanBarcode(context);
-                              if(result!=null){
-                                _controller.text=result;
+                              if (result != null) {
+                                setState(() {
+                                  _controller.text = result;
+                                });
                               }
                             }
                           },
                         )
-                      : null),
-              readOnly: false,
+                      : widget.icon != null
+                          ? Icon(widget.icon, color: Colors.grey.shade400)
+                          : null),
+              enabled: widget.isEditable,
+              readOnly: !widget.isEditable,
             ),
           )
         ],

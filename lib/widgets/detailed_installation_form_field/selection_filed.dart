@@ -6,7 +6,8 @@ import 'package:iov_app/widgets/categories_search/categories_search.dart';
 class SelectionFiled extends StatefulWidget {
   final String label;
   final String initialValue;
-  const SelectionFiled({super.key, required this.label,this.initialValue = '',});
+  final bool isEditable;
+  const SelectionFiled({super.key, required this.label,this.initialValue = '',this.isEditable = false,});
 
   @override
   State<SelectionFiled> createState() => _SelectionFiledState();
@@ -49,25 +50,26 @@ class _SelectionFiledState extends State<SelectionFiled> {
             child: TextField(
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                fillColor: Colors.grey.shade700,
+                fillColor: widget.isEditable ? Colors.white : Colors.grey.shade200,
                 hintText: _selectedJobCategories.isEmpty ?""
-                    :_selectedJobCategories.join(",")
+                    :_selectedJobCategories.join(","),
+                filled: !widget.isEditable,
               ),
               readOnly: true,
-              onTap: (){
+                enabled: widget.isEditable,
+              onTap: widget.isEditable ? () {
                 showDialog(context: context, builder: (context) {
                   return CategoriesSearch(
                     categoriesList: _jobCategories,
                     selectedCategories: _selectedJobCategories,
                     onSelectionChanged: (selected) {
                       setState(() {
-                        dispose();
                         _selectedJobCategories = selected;
                       });
                     },
                   );
                 });
-              }
+              } : null,
             ),
           )
         ],

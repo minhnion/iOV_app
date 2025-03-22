@@ -6,34 +6,47 @@ import 'package:iov_app/widgets/detailed_installation_form_field/selection_filed
 
 import '../../models/detailed_installation.dart';
 
-
 class DetailedInstallationScreen extends StatefulWidget {
   const DetailedInstallationScreen({super.key, required this.jobId});
+
   final int jobId;
+
   @override
-  State<DetailedInstallationScreen> createState() => _DetailedInstallationScreenState();
+  State<DetailedInstallationScreen> createState() =>
+      _DetailedInstallationScreenState();
 }
 
-class _DetailedInstallationScreenState extends State<DetailedInstallationScreen> {
+class _DetailedInstallationScreenState
+    extends State<DetailedInstallationScreen> {
   bool isLoading = true;
+  bool isEdit = false;
   late DetailedInstallation detailed;
 
   Future<void> fetchDetailedInstallation() async {
-    try{
-      print('111');
+    try {
       final data = await JobService().getDetailedInstallation(widget.jobId);
-      print(222);
       setState(() {
         isLoading = false;
         detailed = data!;
       });
-    }catch(e){
+    } catch (e) {
       setState(() {
         isLoading = false;
       });
       print('Error: $e');
     }
   }
+
+  void toggleEditMode() {
+    if(detailed.jobStatus!= "Finished Installation") {
+      setState(() {
+        isEdit = ! isEdit;
+      });
+    }else {
+      print("Cannot edit");
+    }
+  }
+
 
   @override
   void initState() {
@@ -55,19 +68,19 @@ class _DetailedInstallationScreenState extends State<DetailedInstallationScreen>
           },
         ),
         centerTitle: true,
-        title: isLoading? const Text('...'):
-        Text(
-          detailed.vinNo?? '',
-          style: const TextStyle(color: Colors.black),
-        ),
-
+        title: isLoading
+            ? const Text('...')
+            : Text(
+                detailed.vinNo ?? '',
+                style: const TextStyle(color: Colors.black),
+              ),
       ),
       body: isLoading
           ? const Center(
-            child: CircularProgressIndicator(
+              child: CircularProgressIndicator(
                 color: Colors.black,
               ),
-          )
+            )
           : Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
@@ -77,48 +90,72 @@ class _DetailedInstallationScreenState extends State<DetailedInstallationScreen>
                     SelectionFiled(
                       label: "Loại cài đặt",
                       initialValue: detailed.installationType ?? '',
+                      isEditable: isEdit,
                     ),
                     IconField(
                       label: 'Ghi chú',
                       keyField: "note",
-                      initialValue: detailed.note??'',
+                      initialValue: detailed.note ?? '',
+                      isEditable: isEdit,
                     ),
                     IconField(
                       label: "Ngày cài đặt",
                       icon: Icons.calendar_today,
                       keyField: 'date',
-                      initialValue: detailed.installationDate??'',
+                      initialValue: detailed.installationDate ?? '',
+                      isEditable: isEdit,
                     ),
                     IconField(
                       label: "Vị trí cài đặt",
                       icon: Icons.location_on,
                       keyField: 'location',
-                      initialValue: detailed.installationLocation??'',
+                      initialValue: detailed.installationLocation ?? '',
+                      isEditable: isEdit,
                     ),
                     IconField(
                       label: "ODO (km)",
                       keyField: "odo",
-                      initialValue: detailed.odometerReading??'',
+                      initialValue: detailed.odometerReading ?? '',
+                      isEditable: isEdit,
                     ),
                     ImageCameraField(
                       label: 'Ảnh thông tin xe',
-                      imagePaths: detailed.vehicleInforImgPaths??[],
+                      imagePaths: detailed.vehicleInforImgPaths ?? [],
+                      isEditable: isEdit,
                     ),
-                    const ImageCameraField(label: 'Ảnh thiết bị và sim'),
-                    const ImageCameraField(label: 'Ảnh lắp đặt'),
-                    const ImageCameraField(label: 'Ảnh thiết bị sau lắp đặt'),
-                    const ImageCameraField(label: 'Ảnh trạng thái thiết bị'),
+                    ImageCameraField(
+                      label: 'Ảnh thiết bị và sim',
+                      imagePaths: detailed.deviceAndSimImgPaths ?? [],
+                      isEditable: isEdit,
+                    ),
+                    ImageCameraField(
+                      label: 'Ảnh lắp đặt',
+                      imagePaths: detailed.installationImgPaths ?? [],
+                      isEditable: isEdit,
+                    ),
+                    ImageCameraField(
+                      label: 'Ảnh thiết bị sau lắp đặt',
+                      imagePaths: detailed.afterInstallationImgPaths ?? [],
+                      isEditable: isEdit,
+                    ),
+                    ImageCameraField(
+                      label: 'Ảnh trạng thái thiết bị',
+                      imagePaths: detailed.deviceStatusImgPaths ?? [],
+                      isEditable: isEdit,
+                    ),
                     IconField(
                       label: "Số sim",
                       icon: Icons.document_scanner_outlined,
                       keyField: 'barcode',
-                      initialValue: detailed.simNo??'',
+                      initialValue: detailed.simNo ?? '',
+                      isEditable: isEdit,
                     ),
                     IconField(
                       label: "Số imei",
                       icon: Icons.document_scanner_outlined,
                       keyField: 'barcode',
-                      initialValue: detailed.imeiNo??'',
+                      initialValue: detailed.imeiNo ?? '',
+                      isEditable: isEdit,
                     ),
                     const SizedBox(height: 20),
                   ],
@@ -127,34 +164,57 @@ class _DetailedInstallationScreenState extends State<DetailedInstallationScreen>
             ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
+          color: Colors.white,
           border: Border(
-            top: BorderSide(color: Colors.black,width: 0.5)
-          )
+            top: BorderSide(color: Colors.black, width: 0.7),
+          ),
         ),
         child: BottomAppBar(
+          color: Colors.transparent,
           child: Padding(
             padding: const EdgeInsets.all(0.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                InkWell(
-                  onTap: () {
-                    // Handle edit action
-                  },
-                  child: const Text('Chỉnh sửa', style: TextStyle(fontSize: 16)),
+              children: isEdit
+                  ? [
+                TextButton(
+                  onPressed: toggleEditMode,
+                  child: const Text(
+                    'Hủy',
+                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  ),
                 ),
-                InkWell(
-                  onTap: () {
+                TextButton(
+                  onPressed: toggleEditMode,
+                  child: const Text(
+                    'Lưu',
+                    style: TextStyle(fontSize: 16, color: Colors.green),
+                  ),
+                ),
+              ]
+                  : [
+                TextButton(
+                  onPressed: toggleEditMode,
+                  child: const Text(
+                    'Chỉnh sửa',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {
                     // Handle complete action
                   },
-                  child: const Text('Hoàn thành', style: TextStyle(fontSize: 16)),
+                  child: const Text(
+                    'Hoàn thành',
+                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  ),
                 ),
               ],
             ),
           ),
         ),
       ),
+
     );
   }
-
 }

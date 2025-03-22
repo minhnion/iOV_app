@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iov_app/screens/detailed_installation/detailed_installation.dart';
+import 'package:iov_app/screens/detailed_installation_screen/detailed_installation_screen.dart';
 
 import '../../models/job.dart';
 
