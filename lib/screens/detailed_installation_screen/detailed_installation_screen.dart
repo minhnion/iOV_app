@@ -165,11 +165,17 @@ class _DetailedInstallationScreenState
                       label: 'Ảnh thiết bị sau lắp đặt',
                       imagePaths: detailed.afterInstallationImgPaths ?? [],
                       isEditable: isEdit,
+                      onImagesChanged: (value){
+                        updateFieldValue('after_installation_img_file', value);
+                      },
                     ),
                     ImageCameraField(
                       label: 'Ảnh trạng thái thiết bị',
                       imagePaths: detailed.deviceStatusImgPaths ?? [],
                       isEditable: isEdit,
+                      onImagesChanged: (value){
+                        updateFieldValue('gps_devices_img_file', value);
+                      },
                     ),
                     IconField(
                       label: "Số sim",
