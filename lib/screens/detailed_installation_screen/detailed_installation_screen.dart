@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:iov_app/services/job_service.dart';
 import 'package:iov_app/widgets/detailed_installation_form_field/icon_field.dart';
@@ -53,12 +55,31 @@ class _DetailedInstallationScreenState
       updatedFields[fieldName] = value;
     });
   }
+
+  void updateFileValue(String fieldName, List<File> files) {
+    setState(() {
+      updatedFields[fieldName] = files;  // Lưu trực tiếp danh sách File vào updatedFields
+    });
+  }
   
   Future<void> saveChanges() async {
     if(updatedFields.isEmpty) return;
     print('111');
     print(updatedFields);
     //call api
+    try{
+      await JobService().updateInstallation(widget.jobId, updatedFields);
+    }catch(e){
+      print('Error: $e');
+    }
+  }
+
+  Future<void> fulfillInstallation() async {
+    try{
+      await JobService().finishInstallation(widget.jobId);
+    }catch(e){
+      print('Error: $e');
+    }
   }
 
   @override
@@ -150,32 +171,36 @@ class _DetailedInstallationScreenState
                       label: 'Ảnh thông tin xe',
                       imagePaths: detailed.vehicleInforImgPaths ?? [],
                       isEditable: isEdit,
+                      fieldName: 'vehicle_infor_img_file',
+                      onFilesChanged: updateFileValue,
                     ),
                     ImageCameraField(
                       label: 'Ảnh thiết bị và sim',
                       imagePaths: detailed.deviceAndSimImgPaths ?? [],
                       isEditable: isEdit,
+                      fieldName: '',
+                      onFilesChanged: updateFileValue,
                     ),
                     ImageCameraField(
                       label: 'Ảnh lắp đặt',
                       imagePaths: detailed.installationImgPaths ?? [],
                       isEditable: isEdit,
+                      fieldName: '',
+                      onFilesChanged: updateFileValue,
                     ),
                     ImageCameraField(
                       label: 'Ảnh thiết bị sau lắp đặt',
                       imagePaths: detailed.afterInstallationImgPaths ?? [],
                       isEditable: isEdit,
-                      onImagesChanged: (value){
-                        updateFieldValue('after_installation_img_file', value);
-                      },
+                      fieldName: 'after_installation_img_file',
+                      onFilesChanged: updateFileValue,
                     ),
                     ImageCameraField(
                       label: 'Ảnh trạng thái thiết bị',
                       imagePaths: detailed.deviceStatusImgPaths ?? [],
                       isEditable: isEdit,
-                      onImagesChanged: (value){
-                        updateFieldValue('gps_devices_img_file', value);
-                      },
+                      onFilesChanged: updateFileValue,
+                      fieldName: '',
                     ),
                     IconField(
                       label: "Số sim",
@@ -252,7 +277,7 @@ class _DetailedInstallationScreenState
                 ),
                 TextButton(
                   onPressed: () {
-                    // Handle complete action
+                    fulfillInstallation();
                   },
                   child: const Text(
                     'Hoàn thành',

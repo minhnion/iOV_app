@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import '../models/detailed_installation.dart';
 import '../models/job.dart';
@@ -43,4 +45,49 @@ class JobService extends BaseService {
     }
     return null;
   }
+
+  Future<void> updateInstallation(int jobId, Map<String, dynamic> updates) async{
+    final Map<String, dynamic> formDataMap = {};
+
+    for (final entry in updates.entries) {
+      final key = entry.key;
+      final value = entry.value;
+
+      if (value is File) {
+        // Nếu là một file, chuyển thành MultipartFile
+        formDataMap[key] = await MultipartFile.fromFile(
+          value.path,
+          filename: value.path.split('/').last,
+        );
+      } else if (value is List<File>) {
+        // Nếu là danh sách File, chuyển tất cả sang MultipartFile
+        formDataMap[key] = await Future.wait(
+          value.map((file) async => await MultipartFile.fromFile(
+            file.path,
+            filename: file.path.split('/').last,
+          )),
+        );
+      } else {
+        // Các trường khác giữ nguyên
+        formDataMap[key] = value;
+      }
+    }
+
+    final formData = FormData.fromMap(formDataMap);
+
+    try{
+      await postRequest('/job/update/$jobId', data: formData);
+    }catch(e){
+      throw Exception('Error: $e');
+    }
+  }
+
+  Future<void> finishInstallation(int jobId) async{
+    try{
+      await postRequest('/job/finish-installation/$jobId');
+    }catch(e){
+      throw Exception('Error: $e');
+    }
+  }
 }
+

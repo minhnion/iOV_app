@@ -88,7 +88,7 @@ class BaseService {
 
   // POST request
   Future<Response?> postRequest(String endpoint,
-      {Map<String, dynamic>? data}) async {
+      {dynamic data}) async {
     try {
       return await _dio.post(endpoint, data: data);
     } catch (e) {

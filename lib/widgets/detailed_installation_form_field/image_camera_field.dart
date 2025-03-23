@@ -7,6 +7,8 @@ class ImageCameraField extends StatefulWidget {
   final String label;
   final List<String> imagePaths;
   final bool isEditable;
+  final String fieldName;
+  final Function(String, List<File>)? onFilesChanged;
   final Function(List<String>)? onImagesChanged;
 
   const ImageCameraField({
@@ -14,7 +16,8 @@ class ImageCameraField extends StatefulWidget {
     required this.label,
     this.imagePaths = const [],
     this.isEditable = false,
-    this.onImagesChanged,
+    this.onFilesChanged,
+    this.onImagesChanged, required this.fieldName,
   });
 
   @override
@@ -23,17 +26,24 @@ class ImageCameraField extends StatefulWidget {
 
 class _ImageCameraFieldState extends State<ImageCameraField> {
   late List<String> _currentImagePaths;
+  List<File> _imageFiles = [];
   ImagePickerUtils imagePick = ImagePickerUtils();
 
   Future<void> _handleCameraCapture() async {
     final imagePath = await imagePick.openCamera(context: context);
     if (imagePath != null) {
+      final file = File(imagePath);
       setState(() {
         _currentImagePaths.add(imagePath);
+        _imageFiles.add(file);
       });
 
       if (widget.onImagesChanged != null) {
         widget.onImagesChanged!(_currentImagePaths);
+      }
+
+      if (widget.onFilesChanged != null) {
+        widget.onFilesChanged!(widget.fieldName, _imageFiles);
       }
     }
   }
@@ -41,12 +51,18 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
   Future<void> _handleGalleryPick() async {
     final imagePaths = await imagePick.openGalleryForMultipleImages(context: context);
     if (imagePaths.isNotEmpty) {
+      final files = imagePaths.map((path) => File(path)).toList();
       setState(() {
         _currentImagePaths.addAll(imagePaths);
+        _imageFiles.addAll(files);
       });
 
       if (widget.onImagesChanged != null) {
         widget.onImagesChanged!(_currentImagePaths);
+      }
+
+      if (widget.onFilesChanged != null) {
+        widget.onFilesChanged!(widget.fieldName, _imageFiles);
       }
     }
   }
@@ -54,10 +70,16 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
   void _deleteImage(int index) {
     setState(() {
       _currentImagePaths.removeAt(index);
+      if (index < _imageFiles.length) {
+        _imageFiles.removeAt(index);
+      }
     });
 
     if (widget.onImagesChanged != null) {
       widget.onImagesChanged!(_currentImagePaths);
+    }
+    if (widget.onFilesChanged != null) {
+      widget.onFilesChanged!(widget.fieldName, _imageFiles);
     }
   }
 
@@ -65,6 +87,12 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
   void initState() {
     super.initState();
     _currentImagePaths = List.from(widget.imagePaths);
+
+    for (var path in widget.imagePaths) {
+      if (!path.startsWith('http')) {
+        _imageFiles.add(File(path));
+      }
+    }
   }
 
   @override
@@ -124,7 +152,7 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
               ),
             ],
           ),
-          if (widget.imagePaths.isNotEmpty)
+          if (_currentImagePaths.isNotEmpty)
             LayoutBuilder(
               builder: (context, constraints) {
                 // Calculate button width by using the total width minus label width minus spacing
@@ -159,12 +187,13 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
                                       height: 120,
                                       child: isNetworkImage
                                           ? Image.network(
-                                              widget.imagePaths[index],
+                                              imagePath,
                                               fit: BoxFit.cover,
                                               loadingBuilder: (context, child,
                                                   loadingProgress) {
-                                                if (loadingProgress == null)
+                                                if (loadingProgress == null) {
                                                   return child;
+                                                }
                                                 return Container(
                                                   color: Colors.grey[200],
                                                   child: Center(
