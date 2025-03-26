@@ -9,15 +9,16 @@ class ImageCameraField extends StatefulWidget {
   final bool isEditable;
   final String fieldName;
   final Function(String, List<File>)? onFilesChanged;
-  final Function(List<String>)? onImagesChanged;
-
+  // final Function(List<String>)? onImagesChanged;
+  final Function(List<String>)? onDeletedImagesChanged;
   const ImageCameraField({
     super.key,
     required this.label,
     this.imagePaths = const [],
     this.isEditable = false,
     this.onFilesChanged,
-    this.onImagesChanged, required this.fieldName,
+    // this.onImagesChanged,
+    required this.fieldName, this.onDeletedImagesChanged,
   });
 
   @override
@@ -38,9 +39,9 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
         _imageFiles.add(file);
       });
 
-      if (widget.onImagesChanged != null) {
-        widget.onImagesChanged!(_currentImagePaths);
-      }
+      // if (widget.onImagesChanged != null) {
+      //   widget.onImagesChanged!(_currentImagePaths);
+      // }
 
       if (widget.onFilesChanged != null) {
         widget.onFilesChanged!(widget.fieldName, _imageFiles);
@@ -57,9 +58,9 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
         _imageFiles.addAll(files);
       });
 
-      if (widget.onImagesChanged != null) {
-        widget.onImagesChanged!(_currentImagePaths);
-      }
+      // if (widget.onImagesChanged != null) {
+      //   widget.onImagesChanged!(_currentImagePaths);
+      // }
 
       if (widget.onFilesChanged != null) {
         widget.onFilesChanged!(widget.fieldName, _imageFiles);
@@ -68,6 +69,7 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
   }
 
   void _deleteImage(int index) {
+    final imagePath = _currentImagePaths[index];
     setState(() {
       _currentImagePaths.removeAt(index);
       if (index < _imageFiles.length) {
@@ -75,9 +77,14 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
       }
     });
 
-    if (widget.onImagesChanged != null) {
-      widget.onImagesChanged!(_currentImagePaths);
+    if(imagePath.startsWith('http')) {
+      if(widget.onDeletedImagesChanged != null) {
+        widget.onDeletedImagesChanged!([imagePath]);
+      }
     }
+    // if (widget.onImagesChanged != null) {
+    //   widget.onImagesChanged!(_currentImagePaths);
+    // }
     if (widget.onFilesChanged != null) {
       widget.onFilesChanged!(widget.fieldName, _imageFiles);
     }

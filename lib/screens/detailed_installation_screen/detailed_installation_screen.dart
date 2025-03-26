@@ -61,15 +61,21 @@ class _DetailedInstallationScreenState
       updatedFields[fieldName] = files;  // Lưu trực tiếp danh sách File vào updatedFields
     });
   }
-  
+
+  void updateDeletedImagePath(String fieldName, List<String> deletedImagePaths) {
+    setState(() {
+      updatedFields[fieldName] = deletedImagePaths.toList();
+    });
+  }
+
   Future<void> saveChanges() async {
-    if(updatedFields.isEmpty) return;
+    if (updatedFields.isEmpty) return;
     print('111');
     print(updatedFields);
     //call api
-    try{
+    try {
       await JobService().updateInstallation(widget.jobId, updatedFields);
-    }catch(e){
+    } catch (e) {
       print('Error: $e');
     }
   }
@@ -171,36 +177,51 @@ class _DetailedInstallationScreenState
                       label: 'Ảnh thông tin xe',
                       imagePaths: detailed.vehicleInforImgPaths ?? [],
                       isEditable: isEdit,
-                      fieldName: 'vehicle_infor_img_file',
+                      fieldName: 'vehicle_infor_img_files',
                       onFilesChanged: updateFileValue,
+                      onDeletedImagesChanged: (value) {
+                        updateFieldValue('vehicle_infor_img_del_paths', value);
+                      },
                     ),
                     ImageCameraField(
                       label: 'Ảnh thiết bị và sim',
                       imagePaths: detailed.deviceAndSimImgPaths ?? [],
                       isEditable: isEdit,
-                      fieldName: '',
+                      fieldName: 'device_and_sim_img_files',
                       onFilesChanged: updateFileValue,
+                      onDeletedImagesChanged: (value) {
+                        updateFieldValue('device_and_sim_img_del_paths', value);
+                      },
                     ),
                     ImageCameraField(
                       label: 'Ảnh lắp đặt',
                       imagePaths: detailed.installationImgPaths ?? [],
                       isEditable: isEdit,
-                      fieldName: '',
+                      fieldName: 'installation_img_files',
                       onFilesChanged: updateFileValue,
+                      onDeletedImagesChanged: (value) {
+                        updateFieldValue('installation_img_del_paths', value);
+                      },
                     ),
                     ImageCameraField(
                       label: 'Ảnh thiết bị sau lắp đặt',
                       imagePaths: detailed.afterInstallationImgPaths ?? [],
                       isEditable: isEdit,
-                      fieldName: 'after_installation_img_file',
+                      fieldName: 'after_installation_img_files',
                       onFilesChanged: updateFileValue,
+                      onDeletedImagesChanged: (value) {
+                        updateFieldValue('after_installation_img_del_paths', value);
+                      },
                     ),
                     ImageCameraField(
                       label: 'Ảnh trạng thái thiết bị',
                       imagePaths: detailed.deviceStatusImgPaths ?? [],
                       isEditable: isEdit,
                       onFilesChanged: updateFileValue,
-                      fieldName: '',
+                      fieldName: 'device_status_img_files',
+                      onDeletedImagesChanged: (value) {
+                        updateFieldValue('device_status_img_del_paths', value);
+                      },
                     ),
                     IconField(
                       label: "Số sim",
