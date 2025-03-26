@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/screens/installation_screen/installation_screen.dart';
 import '../../services/auth_service.dart';
@@ -73,18 +74,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   )),
             ),
             const SizedBox(height: 24),
-            const Text(
-              'Chào mừng bạn quay lại!',
-              style: TextStyle(
+            Text(
+              'welcome_back'.tr(),
+              style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
                 color: Color.fromRGBO(21 ,186 , 66, 100),
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
-              'Đăng nhập vào tài khoản',
-              style: TextStyle(
+            Text(
+              'login_to_account'.tr(),
+              style: const TextStyle(
                 fontSize: 18,
                 color: Color.fromRGBO(21, 186, 66, 100),
               ),
@@ -92,10 +93,10 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(height: 24),
             TextFormField(
               controller: _usernameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Tên đăng nhập',
-                prefixIcon: Icon(Icons.person),
+              decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                labelText: 'username'.tr(),
+                prefixIcon: const Icon(Icons.person),
               ),
             ),
             const SizedBox(height: 16),
@@ -104,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
               obscureText: _obscurePassword,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                labelText: 'Mật khẩu',
+                labelText: 'password'.tr(),
                 prefixIcon: const Icon(Icons.lock),
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -132,9 +133,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: _isLoading
                     ? const CircularProgressIndicator(
                         color: Colors.white) // Hiển thị loading
-                    : const Text(
-                        'Đăng nhập',
-                        style: TextStyle(fontSize: 16, color: Colors.white),
+                    : Text(
+                        'login'.tr(),
+                        style: const TextStyle(fontSize: 16, color: Colors.white),
                       ),
               ),
             ),

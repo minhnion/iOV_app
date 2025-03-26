@@ -122,7 +122,7 @@ class _MenuTabState extends State<MenuTab> {
                       leading: const Icon(Icons.content_paste,
                           color: Colors.deepPurple),
                       title: Text(
-                        'Danh sách lắp đặt',
+                        'installations'.tr(),
                         style: TextStyle(
                           fontWeight: _selectedMenu == 'Installations'
                               ? FontWeight.bold
@@ -200,7 +200,7 @@ class _MenuTabState extends State<MenuTab> {
                   child: ListTile(
                     leading: const Icon(Icons.language, color: Colors.blue),
                     title: Text(
-                      'Ngôn ngữ',
+                      'language'.tr(),
                       style: TextStyle(
                         fontWeight: _selectedMenu == 'Language'
                             ? FontWeight.bold
@@ -219,7 +219,7 @@ class _MenuTabState extends State<MenuTab> {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(
-                            value,
+                            value.tr(),
                             style: const TextStyle(
                               fontSize: 14,
                             ),
@@ -240,8 +240,8 @@ class _MenuTabState extends State<MenuTab> {
                         context: context,
                         builder: (context) {
                           return ConfirmInform(
-                            title: 'Xác nhận đăng xuất',
-                            content: 'Bạn có muốn đăng xuất không?',
+                            title: 'logout_confirmation_title'.tr(),
+                            content: 'logout_confirmation_message'.tr(),
                             onConfirm: handleLogout,
                           );
                         });
@@ -249,7 +249,7 @@ class _MenuTabState extends State<MenuTab> {
                   child: ListTile(
                     leading: const Icon(Icons.logout, color: Colors.black),
                     title: Text(
-                      'Đăng xuất',
+                      'logout'.tr(),
                       style: TextStyle(
                         fontWeight: _selectedMenu == 'SignOut'
                             ? FontWeight.bold

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -93,15 +94,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     const SizedBox(height: 24),
-                    BuildProfileItem(label: "Tên người dùng", value: userName),
-                    BuildProfileItem(label: "Tên thật", value: fullName),
-                    BuildProfileItem(label: "Biệt danh", value: "N/A"),
-                    BuildProfileItem(label: "Chức vụ", value: roleName),
-                    BuildProfileItem(
-                        label: "Số điện thoại", value: phoneNumber),
-                    BuildProfileItem(
-                        label: "Số điện thoại dự phòng", value: "N/A"),
-                    BuildProfileItem(label: "Email", value: email),
+                    BuildProfileItem(label: "username_label".tr(), value: userName),
+                    BuildProfileItem(label: "full_name_label".tr(), value: fullName),
+                    BuildProfileItem(label: "nickname_label".tr(), value: "N/A"),
+                    BuildProfileItem(label: "position_label".tr(), value: roleName),
+                    BuildProfileItem(label: "phone_number_label".tr(), value: phoneNumber),
+                    BuildProfileItem(label: "backup_phone_number_label".tr(), value: "N/A"),
+                    BuildProfileItem(label: "email_label".tr(), value: email),
                   ],
                 ),
               ),

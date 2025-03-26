@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/models/kpi.dart';
 import 'package:iov_app/services/kpi_service.dart';
@@ -78,9 +79,9 @@ class _KpiScreenState extends State<KpiScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    "Tổng quan",
-                    style: TextStyle(
+                  Text(
+                    "overview".tr(),
+                    style: const TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
                     ),
@@ -90,7 +91,7 @@ class _KpiScreenState extends State<KpiScreen> {
                     children: [
                       Expanded(
                         child: KpiGeneralCard(
-                          title: "KPI hàng ngày",
+                          title: "daily_kpi".tr(),
                           value: "${kpis.actualDaily}/${kpis.planDaily}",
                           icon: Icons.library_books_sharp,
                           color: Colors.blue.shade100,
@@ -100,7 +101,7 @@ class _KpiScreenState extends State<KpiScreen> {
                       const SizedBox(width: 16),
                       Expanded(
                         child: KpiGeneralCard(
-                          title: "KPI hàng tháng",
+                          title: "monthly_kpi".tr(),
                           value: "${kpis.actualMonthly}/${kpis.planMonthly}",
                           icon: Icons.stacked_bar_chart_outlined,
                           color: Colors.lightGreen.shade100,
@@ -110,9 +111,9 @@ class _KpiScreenState extends State<KpiScreen> {
                     ],
                   ),
                   const SizedBox(height: 24),
-                  const Text(
-                    "Chi tiết KPI (3 tháng gần nhất)",
-                    style: TextStyle(
+                  Text(
+                    "kpi_details_3_months".tr(),
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),

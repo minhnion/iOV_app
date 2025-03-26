@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class ConfirmInform extends StatelessWidget {
@@ -26,9 +27,9 @@ class ConfirmInform extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop(); // Dismiss the dialog
           },
-          child: const Text(
-            "Hủy",
-            style: TextStyle(fontSize: 16.0),
+          child: Text(
+            "cancel".tr(),
+            style: const TextStyle(fontSize: 16.0),
           ),
         ),
         TextButton(
