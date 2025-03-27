@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:iov_app/utils/get_device_id.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -7,9 +9,9 @@ import 'base_service.dart';
 class AuthService extends BaseService {
   Future<bool> registerDevice() async {
     try {
-      String deviceId = 'test_device_id_01';
-      String deviceName = 'test_device_name_01';
-      String deviceToken = 'test_device_token_01';
+      String ?deviceId = await getDeviceId();
+      String deviceName = 'My Flutter App';
+      String? deviceToken = await FirebaseMessaging.instance.getToken();
 
       final response = await dio.post(
         '/device/register-token',
@@ -22,9 +24,9 @@ class AuthService extends BaseService {
 
       if (response.statusCode == 200) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('device_id', deviceId);
+        await prefs.setString('device_id', deviceId ?? 'N/A');
         await prefs.setString('device_name', deviceName);
-        await prefs.setString('device_token', deviceToken);
+        await prefs.setString('device_token', deviceToken ?? 'N/A');
         return true;
       }
       return false;
