@@ -162,109 +162,100 @@ class _ImageCameraFieldState extends State<ImageCameraField> {
           if (_currentImagePaths.isNotEmpty)
             LayoutBuilder(
               builder: (context, constraints) {
-                // Calculate button width by using the total width minus label width minus spacing
                 final totalWidth = constraints.maxWidth;
-                final labelWidth = totalWidth / 3; // Since label has flex: 1 out of total flex: 3
-                const double spacingWidth = 10.0; // Explicitly define as double
+                final labelWidth = totalWidth / 3; // Giữ nguyên logic labelWidth như cũ
+                const double spacingWidth = 10.0;
                 final buttonsAreaWidth = totalWidth - labelWidth;
-                final double singleButtonWidth = (buttonsAreaWidth - spacingWidth) / 2; // Make sure it's double
+                const int columns = 2;
+                final double singleItemWidth = (buttonsAreaWidth - spacingWidth) / columns;
 
                 return Padding(
                   padding: const EdgeInsets.only(top: 10),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(width: labelWidth),
+                      SizedBox(width: labelWidth), // Giữ nguyên khoảng trống labelWidth
                       Expanded(
-                        child: SizedBox(
-                          height: 120,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _currentImagePaths.length,
-                            itemBuilder: (context, index) {
-                              final imagePath = _currentImagePaths[index];
-                              final isNetworkImage = imagePath.startsWith('http');
+                        child: GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: columns,
+                            crossAxisSpacing: spacingWidth,
+                            mainAxisSpacing: spacingWidth,
+                            childAspectRatio: 1,
+                          ),
+                          itemCount: _currentImagePaths.length,
+                          itemBuilder: (context, index) {
+                            final imagePath = _currentImagePaths[index];
+                            final isNetworkImage = imagePath.startsWith('http');
 
-                              return Padding(
-                                padding: EdgeInsets.only(right: index < widget.imagePaths.length - 1 ? spacingWidth : 0.0),
-                                child: Stack(
-                                  children: [
-                                    SizedBox(
-                                      width: singleButtonWidth,
-                                      height: 120,
-                                      child: isNetworkImage
-                                          ? Image.network(
-                                              imagePath,
-                                              fit: BoxFit.cover,
-                                              loadingBuilder: (context, child,
-                                                  loadingProgress) {
-                                                if (loadingProgress == null) {
-                                                  return child;
-                                                }
-                                                return Container(
-                                                  color: Colors.grey[200],
-                                                  child: Center(
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      value: loadingProgress
-                                                                  .expectedTotalBytes !=
-                                                              null
-                                                          ? loadingProgress
-                                                                  .cumulativeBytesLoaded /
-                                                              loadingProgress
-                                                                  .expectedTotalBytes!
-                                                          : null,
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Container(
-                                                  color: Colors.grey[200],
-                                                  child: const Center(
-                                                    child: Icon(Icons.error,
-                                                        color: Colors.red),
-                                                  ),
-                                                );
-                                              },
-                                            )
-                                          : Image.file(
-                                              File(imagePath),
-                                              fit: BoxFit.cover,
-                                              errorBuilder:
-                                                  (context, error, stackTrace) {
-                                                return Container(
-                                                  color: Colors.grey[200],
-                                                  child: const Center(
-                                                    child: Icon(Icons.error,
-                                                        color: Colors.red),
-                                                  ),
-                                                );
-                                              },
-                                            ),
-                                    ),
-                                    if (widget.isEditable)
-                                      Positioned(
-                                        right: 5,
-                                        top: 5,
-                                        child: GestureDetector(
-                                          onTap:() => _deleteImage(index),
-                                          child: Container(
-                                            padding: const EdgeInsets.all(2),
-                                            decoration: BoxDecoration(
-                                              color: Colors.white.withOpacity(0.7),
-                                              shape: BoxShape.circle,
-                                            ),
-                                            child: const Icon(Icons.close, size: 16),
+                            return Stack(
+                              children: [
+                                SizedBox(
+                                  width: singleItemWidth,
+                                  height: singleItemWidth,
+                                  child: isNetworkImage
+                                      ? Image.network(
+                                    imagePath,
+                                    fit: BoxFit.cover,
+                                    loadingBuilder: (context, child, loadingProgress) {
+                                      if (loadingProgress == null) {
+                                        return child;
+                                      }
+                                      return Container(
+                                        color: Colors.grey[200],
+                                        child: Center(
+                                          child: CircularProgressIndicator(
+                                            value: loadingProgress.expectedTotalBytes != null
+                                                ? loadingProgress.cumulativeBytesLoaded /
+                                                loadingProgress.expectedTotalBytes!
+                                                : null,
                                           ),
                                         ),
-                                      ),
-                                  ],
+                                      );
+                                    },
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child: Icon(Icons.error, color: Colors.red),
+                                        ),
+                                      );
+                                    },
+                                  )
+                                      : Image.file(
+                                    File(imagePath),
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (context, error, stackTrace) {
+                                      return Container(
+                                        color: Colors.grey[200],
+                                        child: const Center(
+                                          child: Icon(Icons.error, color: Colors.red),
+                                        ),
+                                      );
+                                    },
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
+                                if (widget.isEditable)
+                                  Positioned(
+                                    right: 5,
+                                    top: 5,
+                                    child: GestureDetector(
+                                      onTap: () => _deleteImage(index),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white.withOpacity(0.7),
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Icon(Icons.close, size: 16),
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            );
+                          },
                         ),
                       ),
                     ],
