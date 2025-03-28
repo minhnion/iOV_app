@@ -36,10 +36,13 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
   ];
   List<String> _selectedJobCategories = [];
 
+  // String _getSelectedJobs() {
+  //   if (_selectedJobCategories.isEmpty) {
+  //     return '';
+  //   }
+  //   return _selectedJobCategories.join(",");
+  // }
   String _getSelectedJobs() {
-    if (_selectedJobCategories.isEmpty) {
-      return '';
-    }
     return _selectedJobCategories.join(",");
   }
 

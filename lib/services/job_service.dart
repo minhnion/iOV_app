@@ -10,7 +10,7 @@ class JobService extends BaseService {
     int page = 1,
     int size = 10,
     String? search,
-    String? status,
+    List<String>? status,
     String? fromDate,
     String? toDate,
   }) async {
@@ -19,9 +19,10 @@ class JobService extends BaseService {
         'page': page,
         'size': size,
         'search': search,
-        'status': status,
         'from_date': fromDate,
         'to_date': toDate,
+        if (status != null && status.isNotEmpty)
+          'status': status.join(','),
       };
       Response? response = await getRequest('/job/search', queryParams: queryParams);
 
