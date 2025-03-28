@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "598198611332",
+    "project_id": "iov-app-notification",
+    "storage_bucket": "iov-app-notification.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:598198611332:android:75ba3d06ce2865d7be01d1",
+        "android_client_info": {
+          "package_name": "com.example.iov_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1csK_xtuICMZ51UhlbnsZJhN4xDFq80c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
