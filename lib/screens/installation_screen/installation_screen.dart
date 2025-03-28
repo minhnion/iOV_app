@@ -25,12 +25,15 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
   String status = '';
   String search = '';
 
+  List<String> savedSelectedCategories = [];
+
   void handleSearch(String searchKey, String from_date, String to_date, String sta){
     setState(() {
       search = searchKey;
       fromDate = from_date;
       toDate = to_date;
       status = sta;
+      savedSelectedCategories = sta.split(',');
     });
     fetchInstallations();
   }
@@ -116,6 +119,10 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
                   builder: (context){
                     return InstallationSearchForm(
                       onSearch: handleSearch,
+                      initialImei: search,
+                      initialFromDate: fromDate,
+                      initialToDate: toDate,
+                      initialSelectedCategories: status.split(','),
                     );
                   }
               );

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/services/job_service.dart';
 import 'package:iov_app/widgets/detailed_installation_form_field/icon_field.dart';
@@ -128,7 +129,7 @@ class _DetailedInstallationScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SelectionFiled(
-                      label: "Loại cài đặt",
+                      label: "installation_type".tr(),
                       initialValue: detailed.installationType ?? '',
                       isEditable: isEdit, 
                       onValueChanged: (value) {
@@ -136,7 +137,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     IconField(
-                      label: 'Ghi chú',
+                      label: 'note'.tr(),
                       keyField: "note",
                       initialValue: detailed.note ?? '',
                       isEditable: isEdit,
@@ -145,7 +146,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     IconField(
-                      label: "Ngày cài đặt",
+                      label: "installation_date".tr(),
                       icon: Icons.calendar_today,
                       keyField: 'date',
                       initialValue: detailed.installationDate ?? '',
@@ -155,7 +156,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     IconField(
-                      label: "Vị trí cài đặt",
+                      label: "installation_location".tr(),
                       icon: Icons.location_on,
                       keyField: 'location',
                       initialValue: detailed.installationLocation ?? '',
@@ -165,7 +166,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     IconField(
-                      label: "ODO (km)",
+                      label: "odo_km".tr(),
                       keyField: "odo",
                       initialValue: detailed.odometerReading ?? '',
                       isEditable: isEdit,
@@ -174,7 +175,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     ImageCameraField(
-                      label: 'Ảnh thông tin xe',
+                      label: 'vehicle_info_photo'.tr(),
                       imagePaths: detailed.vehicleInforImgPaths ?? [],
                       isEditable: isEdit,
                       fieldName: 'vehicle_infor_img_files',
@@ -184,7 +185,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     ImageCameraField(
-                      label: 'Ảnh thiết bị và sim',
+                      label: 'device_sim_photo'.tr(),
                       imagePaths: detailed.deviceAndSimImgPaths ?? [],
                       isEditable: isEdit,
                       fieldName: 'device_and_sim_img_files',
@@ -194,7 +195,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     ImageCameraField(
-                      label: 'Ảnh lắp đặt',
+                      label: 'installation_photo'.tr(),
                       imagePaths: detailed.installationImgPaths ?? [],
                       isEditable: isEdit,
                       fieldName: 'installation_img_files',
@@ -204,7 +205,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     ImageCameraField(
-                      label: 'Ảnh thiết bị sau lắp đặt',
+                      label: 'device_after_install_photo'.tr(),
                       imagePaths: detailed.afterInstallationImgPaths ?? [],
                       isEditable: isEdit,
                       fieldName: 'after_installation_img_files',
@@ -214,7 +215,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     ImageCameraField(
-                      label: 'Ảnh trạng thái thiết bị',
+                      label: 'device_status_photo'.tr(),
                       imagePaths: detailed.deviceStatusImgPaths ?? [],
                       isEditable: isEdit,
                       onFilesChanged: updateFileValue,
@@ -224,7 +225,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     IconField(
-                      label: "Số sim",
+                      label: "sim_number".tr(),
                       icon: Icons.document_scanner_outlined,
                       keyField: 'barcode',
                       initialValue: detailed.simNo ?? '',
@@ -234,7 +235,7 @@ class _DetailedInstallationScreenState
                       },
                     ),
                     IconField(
-                      label: "Số imei",
+                      label: "imei_number".tr(),
                       icon: Icons.document_scanner_outlined,
                       keyField: 'barcode',
                       initialValue: detailed.imeiNo ?? '',
@@ -270,9 +271,9 @@ class _DetailedInstallationScreenState
                       isEdit = false;
                     });
                   },
-                  child: const Text(
-                    'Hủy',
-                    style: TextStyle(fontSize: 16, color: Colors.black),
+                  child: Text(
+                    'cancel'.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.black),
                   ),
                 ),
                 TextButton(
@@ -282,27 +283,27 @@ class _DetailedInstallationScreenState
                       isEdit = false;
                     });
                   },
-                  child: const Text(
-                    'Lưu',
-                    style: TextStyle(fontSize: 16, color: Colors.green),
+                  child: Text(
+                    'save_button'.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.green),
                   ),
                 ),
               ]
                   : [
                 TextButton(
                   onPressed: toggleEditMode,
-                  child: const Text(
-                    'Chỉnh sửa',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  child: Text(
+                    'edit_button_label'.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
                 TextButton(
                   onPressed: () {
                     fulfillInstallation();
                   },
-                  child: const Text(
-                    'Hoàn thành',
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                  child: Text(
+                    'done'.tr(),
+                    style: const TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ),
               ],

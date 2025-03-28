@@ -29,5 +29,32 @@
   "kpi_details_3_months": "Chi tiết KPI (3 tháng gần nhất)",
   "planned": "Kế hoạch",
   "actual": "Thực tế",
-  "month": "Tháng"
+  "month": "Tháng",
+  "vehicle_imei_number": "Vehicle No./ IMEI No.",
+  "from_date": "From Date",
+  "to_date": "To Date",
+  "job_status": "Job Status",
+  "clear_filter": "Clear Filter",
+
+  "new": "Mới tạo",
+  "finished_installation": "Đã lắp xong",
+  "need_update_status": "Cần cập nhật",
+  "updated_status": "Đã cập nhật",
+  "select_all": "Chọn tất cả",
+  "done": "Hoàn thành",
+
+  "installation_type": "Loại cài đặt",
+  "note": "Ghi chú",
+  "installation_date": "Ngày cài đặt",
+  "installation_location": "Vị trí cài đặt",
+  "odo_km": "ODO (km)",
+  "vehicle_info_photo": "Ảnh thông tin xe",
+  "device_sim_photo": "Ảnh thiết bị và sim",
+  "installation_photo": "Ảnh lắp đặt",
+  "device_after_install_photo": "Ảnh thiết bị sau lắp đặt",
+  "device_status_photo": "Ảnh trạng thái thiết bị",
+  "sim_number": "Số sim",
+  "imei_number": "Số imei",
+  "save_button": "Lưu",
+  "edit_button_label": "Chỉnh sửa"
 }

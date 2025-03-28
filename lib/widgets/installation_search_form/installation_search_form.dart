@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:iov_app/widgets/categories_search/categories_search.dart';
 
@@ -5,22 +6,33 @@ import '../../utils/date_picker.dart';
 
 class InstallationSearchForm extends StatefulWidget {
   final Function(String imeiNumber, String fromDate, String toDate, String status) onSearch;
-  const InstallationSearchForm({super.key , required this.onSearch});
+  final String? initialImei;
+  final String? initialFromDate;
+  final String? initialToDate;
+  final List<String>? initialSelectedCategories;
+
+  const InstallationSearchForm(
+      {super.key,
+      required this.onSearch,
+      this.initialImei,
+      this.initialFromDate,
+      this.initialToDate,
+      this.initialSelectedCategories});
 
   @override
   State<InstallationSearchForm> createState() => _InstallationSearchFormState();
 }
 
 class _InstallationSearchFormState extends State<InstallationSearchForm> {
-  final TextEditingController _imeiController = TextEditingController();
-  final TextEditingController _fromDateController = TextEditingController();
-  final TextEditingController _toDateController = TextEditingController();
+  late TextEditingController _imeiController = TextEditingController();
+  late TextEditingController _fromDateController = TextEditingController();
+  late TextEditingController _toDateController = TextEditingController();
 
   final List<String> _jobCategories = [
-    "Mới tạo",
-    "Đã lắp xong",
-    "Cần cập nhật",
-    "Đã cập nhật"
+    "new".tr(),
+    "finished_installation".tr(),
+    "need_update_status".tr(),
+    "updated_status".tr()
   ];
   List<String> _selectedJobCategories = [];
 
@@ -32,6 +44,24 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _imeiController = TextEditingController(text: widget.initialImei ?? '');
+    _fromDateController = TextEditingController(text: widget.initialFromDate ?? '');
+    _toDateController = TextEditingController(text: widget.initialToDate ?? '');
+    _selectedJobCategories = widget.initialSelectedCategories ?? [];
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _imeiController.dispose();
+    _fromDateController.dispose();
+    _toDateController.dispose();
+  }
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -40,10 +70,10 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
         children: [
           TextFormField(
             controller: _imeiController,
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Số xe/ Số imei",
-                prefixIcon: Icon(
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: "vehicle_imei_number".tr(),
+                prefixIcon: const Icon(
                   Icons.directions_car_filled,
                 )),
           ),
@@ -56,10 +86,10 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
             onTap: () {
               selectedDate(context, _fromDateController);
             },
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Từ ngày",
-                prefixIcon: Icon(
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: "from_date".tr(),
+                prefixIcon: const Icon(
                   Icons.calendar_month_sharp,
                 )),
           ),
@@ -72,10 +102,10 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
             onTap: () {
               selectedDate(context, _toDateController);
             },
-            decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Đến ngày",
-                prefixIcon: Icon(
+            decoration: InputDecoration(
+                border: const OutlineInputBorder(),
+                hintText: "to_date".tr(),
+                prefixIcon: const Icon(
                   Icons.calendar_month_sharp,
                 )),
           ),
@@ -101,9 +131,8 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
             decoration: InputDecoration(
                 border: const OutlineInputBorder(),
                 hintText: _selectedJobCategories.isEmpty
-                    ? "Trạng thái job"
+                    ? "job_status".tr()
                     : _selectedJobCategories.join(", "),
-                // Hiển thị trạng thái đã chọn
                 suffixIcon: const Icon(Icons.arrow_drop_down)),
           ),
           const SizedBox(
@@ -126,8 +155,8 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
                         _toDateController.clear();
                       });
                     },
-                    child: const Text(
-                      "Xóa điều kiện",
+                    child: Text(
+                      "clear_filter".tr(),
                     )),
               ),
               const SizedBox(
@@ -149,8 +178,8 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
                         _getSelectedJobs()
                       );
                     },
-                    child: const Text(
-                      "Tìm kiếm",
+                    child: Text(
+                      "search".tr(),
                     )),
               )
             ],

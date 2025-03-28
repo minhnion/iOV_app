@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class CategoriesSearch extends StatefulWidget {
@@ -62,7 +63,7 @@ class _CategoriesSearchState extends State<CategoriesSearch> {
             TextFormField(
               controller: _searchController,
               decoration: InputDecoration(
-                  hintText: 'Tìm kiếm',
+                  hintText: 'search'.tr(),
                   border: const OutlineInputBorder(),
                   prefixIcon: Icon(Icons.search, color: Colors.grey[600],)
               ),
@@ -104,9 +105,9 @@ class _CategoriesSearchState extends State<CategoriesSearch> {
                       _tempSelectedCategories = List.from(widget.categoriesList);
                     });
                   },
-                  child: const Text(
-                      'Chọn tất cả',
-                      style: TextStyle(
+                  child: Text(
+                      'select_all'.tr(),
+                      style: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 20
@@ -118,9 +119,9 @@ class _CategoriesSearchState extends State<CategoriesSearch> {
                     widget.onSelectionChanged(_tempSelectedCategories);
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
-                      'Hoàn thành',
-                      style: TextStyle(
+                  child: Text(
+                      'done'.tr(),
+                      style: const TextStyle(
                           color: Colors.green,
                           fontWeight: FontWeight.bold,
                           fontSize: 20

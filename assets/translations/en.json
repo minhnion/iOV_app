@@ -29,5 +29,32 @@
   "kpi_details_3_months": "KPI Details (Last 3 months)",
   "planned": "Planned",
   "actual": "Actual",
-  "month": "Month"
+  "month": "Month",
+  "vehicle_imei_number": "Vehicle No./ IMEI No.",
+  "from_date": "From Date",
+  "to_date": "To Date",
+  "job_status": "Job Status",
+  "clear_filter": "Clear Filter",
+
+  "new": "New",
+  "finished_installation": "Finished Installation",
+  "need_update_status": "Need Update",
+  "updated_status": "Updated",
+  "select_all": "Select All",
+  "done": "Done",
+
+  "installation_type": "Installation Type",
+  "note": "Note",
+  "installation_date": "Installation Date",
+  "installation_location": "Installation Location",
+  "odo_km": "ODO (km)",
+  "vehicle_info_photo": "Vehicle Info Photo",
+  "device_sim_photo": "Device & SIM Photo",
+  "installation_photo": "Installation Photo",
+  "device_after_install_photo": "Device After Install Photo",
+  "device_status_photo": "Device Status Photo",
+  "sim_number": "SIM Number",
+  "imei_number": "IMEI Number",
+  "save_button": "Save",
+  "edit_button_label": "Edit"
 }
