@@ -1,0 +1,2 @@
+D:/iov_app/android/app/.cxx/RelWithDebInfo/45701o5q/x86/CMakeFiles/edit_cache.dir
+D:/iov_app/android/app/.cxx/RelWithDebInfo/45701o5q/x86/CMakeFiles/rebuild_cache.dir
