@@ -36,10 +36,10 @@
   "job_status": "Job Status",
   "clear_filter": "Clear Filter",
 
-  "new": "New",
-  "finished_installation": "Finished Installation",
-  "need_update_status": "Need Update",
-  "updated_status": "Updated",
+  "New": "New",
+  "Finished Installation": "Finished Installation",
+  "Need Update": "Need Update",
+  "Updated": "Updated",
   "select_all": "Select All",
   "done": "Done",
 

@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: 120,
               height: 120,
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(0, 240, 2, 100),
+                color: const Color.fromRGBO(0, 240, 2, 1.0),
                 borderRadius: BorderRadius.circular(16),
               ),
               child: const Center(
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
               style: const TextStyle(
                 fontSize: 30,
                 fontWeight: FontWeight.bold,
-                color: Color.fromRGBO(21 ,186 , 66, 100),
+                color: Color.fromRGBO(21 ,186 , 66, 1.0),
               ),
             ),
             const SizedBox(height: 8),
@@ -87,7 +87,7 @@ class _LoginScreenState extends State<LoginScreen> {
               'login_to_account'.tr(),
               style: const TextStyle(
                 fontSize: 18,
-                color: Color.fromRGBO(21, 186, 66, 100),
+                color: Color.fromRGBO(21, 186, 66, 1.0),
               ),
             ),
             const SizedBox(height: 24),
@@ -126,7 +126,7 @@ class _LoginScreenState extends State<LoginScreen> {
               width: double.infinity,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(23, 150, 68, 100),
+                  backgroundColor: const Color.fromRGBO(23, 150, 68, 1.0),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
                 onPressed: _handleLogin,

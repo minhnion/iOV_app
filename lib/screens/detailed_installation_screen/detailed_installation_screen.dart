@@ -71,9 +71,7 @@ class _DetailedInstallationScreenState
 
   Future<void> saveChanges() async {
     if (updatedFields.isEmpty) return;
-    print('111');
     print(updatedFields);
-    //call api
     try {
       await JobService().updateInstallation(widget.jobId, updatedFields);
     } catch (e) {
@@ -100,7 +98,7 @@ class _DetailedInstallationScreenState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(193, 234, 193, 100),
+        backgroundColor: const Color.fromRGBO(193, 234, 193, 1.0),
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),

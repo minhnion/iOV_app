@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iov_app/screens/detailed_installation_screen/detailed_installation_screen.dart';
-
+import 'package:easy_localization/easy_localization.dart';
 import '../../models/job.dart';
 
 class VehicleCard extends StatelessWidget {
@@ -38,7 +38,7 @@ class VehicleCard extends StatelessWidget {
                       style: const TextStyle(color: Colors.grey),
                     ),
                     Text(
-                      item.job_status??"Null",
+                      item.job_status?.tr()??"Null",
                       style: const TextStyle(color: Colors.green),
                     ),
                   ],

@@ -29,19 +29,13 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
   late TextEditingController _toDateController = TextEditingController();
 
   final List<String> _jobCategories = [
-    "new".tr(),
-    "finished_installation".tr(),
-    "need_update_status".tr(),
-    "updated_status".tr()
+    "New".tr(),
+    "Finished Installation".tr(),
+    "Need Update".tr(),
+    "Updated".tr()
   ];
   List<String> _selectedJobCategories = [];
 
-  // String _getSelectedJobs() {
-  //   if (_selectedJobCategories.isEmpty) {
-  //     return '';
-  //   }
-  //   return _selectedJobCategories.join(",");
-  // }
   String _getSelectedJobs() {
     return _selectedJobCategories.join(",");
   }
@@ -156,6 +150,7 @@ class _InstallationSearchFormState extends State<InstallationSearchForm> {
                         _imeiController.clear();
                         _fromDateController.clear();
                         _toDateController.clear();
+                        _selectedJobCategories.clear();
                       });
                     },
                     child: Text(

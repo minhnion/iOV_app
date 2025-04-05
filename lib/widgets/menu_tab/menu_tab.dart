@@ -80,7 +80,7 @@ class _MenuTabState extends State<MenuTab> {
                         width: 50,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: const Color.fromRGBO(0, 240, 2, 100),
+                          color: const Color.fromRGBO(0, 240, 2, 1.0),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Center(
@@ -168,7 +168,7 @@ class _MenuTabState extends State<MenuTab> {
                       : null,
                   child: ListTile(
                     leading: const CircleAvatar(
-                        backgroundColor: Color.fromRGBO(23, 150, 68, 100),
+                        backgroundColor: Color.fromRGBO(23, 150, 68, 1.0),
                         child: Icon(Icons.person, color: Colors.white)),
                     title: Text(
                       email,

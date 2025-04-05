@@ -16,7 +16,7 @@ class KpiPerMonthCard extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(0,0,0,10),
       child: Container(
         decoration: BoxDecoration(
-          color:  const Color.fromRGBO(237, 237, 240, 100),
+          color:  const Color.fromRGBO(237, 237, 240, 1.0),
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(

@@ -19,7 +19,7 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
   bool isLoading = true;
   int size = 10;
   int currentPage = 1;
-  late int totalRecords;
+  int totalRecords = 0;
   String fromDate = '';
   String toDate = '';
   String search = '';
@@ -71,7 +71,7 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(193, 234, 193, 100),
+        backgroundColor: const Color.fromRGBO(193, 234, 193, 1.0),
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu, color: Colors.black),
@@ -84,7 +84,7 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
               width: 35,
               height: 35,
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(0, 240, 2, 100),
+                color: const Color.fromRGBO(0, 240, 2, 1.0),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: const Center(
@@ -99,11 +99,17 @@ class _InstallationsScreenState extends State<InstallationsScreen> {
               ),
             ),
             const SizedBox(width: 8),
-            Text(
-              'installations'.tr(),
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold
+            Expanded(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'installations'.tr(),
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ],

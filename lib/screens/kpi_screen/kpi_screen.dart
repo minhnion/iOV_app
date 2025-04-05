@@ -47,7 +47,7 @@ class _KpiScreenState extends State<KpiScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(193, 234, 193, 100),
+        backgroundColor: const Color.fromRGBO(193, 234, 193, 1.0),
         leading: Builder(
           builder: (context) => IconButton(
             icon: const Icon(Icons.menu, color: Colors.black),
